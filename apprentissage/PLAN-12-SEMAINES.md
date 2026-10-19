@@ -14,20 +14,20 @@ photo du cahier → lecture par l'IA → vérification des calculs → validatio
 
 ## Vue d'ensemble
 
-| Sem. | Thème | Livrable DiaBook |
-| ---: | --- | --- |
-| 1 | Comprendre un LLM, appeler une API, streaming | `ask.js` + page React en streaming ✅ (étape 5 en cours) |
-| 2 | Prompt engineering | Prompt « lecteur de cahier » avec le lexique malagasy |
-| 3 | Sorties structurées (JSON) | Texte d'une journée → JSON validé par Zod |
-| 4 | Vision : lire une image | Photo d'une page → JSON |
-| 5 | Règles métier et validation humaine | Calcul du solde + écran de validation |
-| 6 | Évaluer la qualité | Jeu de test + score de précision par champ |
-| 7 | Function calling (outils) | L'IA appelle nos fonctions : lieux, dernier n° de voyage |
-| 8 | Embeddings et recherche sémantique | Normaliser les lieux mal orthographiés |
-| 9 | Assistant sur les données | « Combien de voyages de sable en septembre ? » |
-| 10 | Coût, performance, fiabilité | File d'attente des extractions, cache, logs |
-| 11 | Sécurité et modèles locaux | Défense contre l'injection de prompt, comparaison avec Ollama |
-| 12 | Intégration et bilan | Brancher le pipeline dans `apps/api` + démo |
+| Sem. | Thème                                         | Livrable DiaBook                                              |
+| ---: | --------------------------------------------- | ------------------------------------------------------------- |
+|    1 | Comprendre un LLM, appeler une API, streaming | `ask.js` + page React en streaming ✅ terminée                |
+|    2 | Prompt engineering                            | Prompt « lecteur de cahier » avec le lexique malagasy         |
+|    3 | Sorties structurées (JSON)                    | Texte d'une journée → JSON validé par Zod                     |
+|    4 | Vision : lire une image                       | Photo d'une page → JSON                                       |
+|    5 | Règles métier et validation humaine           | Calcul du solde + écran de validation                         |
+|    6 | Évaluer la qualité                            | Jeu de test + score de précision par champ                    |
+|    7 | Function calling (outils)                     | L'IA appelle nos fonctions : lieux, dernier n° de voyage      |
+|    8 | Embeddings et recherche sémantique            | Normaliser les lieux mal orthographiés                        |
+|    9 | Assistant sur les données                     | « Combien de voyages de sable en septembre ? »                |
+|   10 | Coût, performance, fiabilité                  | File d'attente des extractions, cache, logs                   |
+|   11 | Sécurité et modèles locaux                    | Défense contre l'injection de prompt, comparaison avec Ollama |
+|   12 | Intégration et bilan                          | Brancher le pipeline dans `apps/api` + démo                   |
 
 ---
 
@@ -35,6 +35,7 @@ photo du cahier → lecture par l'IA → vérification des calculs → validatio
 
 - **Notions :** token, fenêtre de contexte, température, coût entrée/sortie, streaming, gestion d'erreurs.
 - **Livrable :** `scripts/ask.js` ; route `POST /api/ai` en SSE ; page React avec bouton « Stop ».
+- **Statut :** ✅ terminée le 2026-10-19, checklist validée.
 - **Dossier :** [semaine-01/](semaine-01/) — résumé dans [semaine-01/RESUME.md](semaine-01/RESUME.md).
 
 ## Semaine 2 — Prompt engineering
@@ -42,7 +43,7 @@ photo du cahier → lecture par l'IA → vérification des calculs → validatio
 - **Notions :**
   - instructions système et message utilisateur ;
   - consignes claires, rôle, format de réponse ;
-  - exemples (*few-shot*) ;
+  - exemples (_few-shot_) ;
   - conversation sur plusieurs tours (historique renvoyé à chaque appel).
 - **Pratique :** écrire le prompt « lecteur de cahier ».
   - Il contient le lexique : Fasika, Biriky, vgs, sakafo, G.O, « Miandry vola »…

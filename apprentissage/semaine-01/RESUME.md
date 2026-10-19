@@ -142,33 +142,33 @@ Coche chaque ligne quand tu l'as vérifiée **toi-même**.
 
 **Comprendre**
 
-- [ ] Je sais expliquer ce qu'est un token, et pourquoi le malagasy en consomme plus.
-- [ ] Je sais ce que contient la fenêtre de contexte, et que le modèle n'a pas de mémoire entre deux appels.
-- [ ] Je sais quelle température choisir pour extraire des données (0), et pourquoi.
-- [ ] Je sais calculer le coût d'un appel à partir des tokens d'entrée et de sortie.
-- [ ] Je sais ce qu'est une hallucination, et comment le contexte la réduit.
+- [x] Je sais expliquer ce qu'est un token, et pourquoi le malagasy en consomme plus.
+- [x] Je sais ce que contient la fenêtre de contexte, et que le modèle n'a pas de mémoire entre deux appels.
+- [x] Je sais quelle température choisir pour extraire des données (0), et pourquoi.
+- [x] Je sais calculer le coût d'un appel à partir des tokens d'entrée et de sortie.
+- [x] Je sais ce qu'est une hallucination, et comment le contexte la réduit.
 
 **Livrable A — ligne de commande**
 
-- [ ] `node scripts/ask.js "question"` affiche la réponse et les tokens d'entrée et de sortie.
-- [ ] `--temp 0` et `--temp 1.8` donnent des réponses de styles différents.
-- [ ] `--stream` affiche la réponse au fur et à mesure, et Ctrl+C l'interrompt proprement.
-- [ ] Une clé invalide, un mauvais modèle ou un timeout affichent un message clair (et pas une pile d'erreur).
+- [x] `node scripts/ask.js "question"` affiche la réponse et les tokens d'entrée et de sortie.
+- [x] `--temp 0` et `--temp 1.8` donnent des réponses de styles différents.
+- [x] `--stream` affiche la réponse au fur et à mesure, et Ctrl+C l'interrompt proprement.
+- [x] Une clé invalide, un mauvais modèle ou un timeout affichent un message clair (et pas une pile d'erreur).
 
 **Livrable B — streaming dans React**
 
-- [ ] `POST /api/ai` répond en streaming (test avec `curl -N`).
-- [ ] La page affiche la réponse au fur et à mesure.
-- [ ] Le bouton **Stop** arrête l'affichage, ET le terminal du serveur affiche « génération arrêtée par le client ».
-- [ ] Un prompt vide est refusé (400) avec un message lisible.
-- [ ] Je sais expliquer le trajet d'un morceau de texte : Gemini → Express → navigateur → React.
+- [x] `POST /api/ai` répond en streaming (test avec `curl -N`).
+- [x] La page affiche la réponse au fur et à mesure.
+- [x] Le bouton **Stop** arrête l'affichage, ET le terminal du serveur affiche « génération arrêtée par le client ».
+- [x] Un prompt vide est refusé (400) avec un message lisible.
+- [x] Je sais expliquer le trajet d'un morceau de texte : Gemini → Express → navigateur → React.
 
 **Livrable C — repo**
 
-- [ ] `npm run dev` lance les deux serveurs, et la page fonctionne sur <http://localhost:5180>.
-- [ ] `npm start` compile la page, et tout fonctionne sur <http://localhost:3100>.
-- [ ] Le `.env` n'apparaît pas dans git (`git status` ne le montre pas), le `.env.example` oui.
-- [ ] Quelqu'un d'autre pourrait installer et lancer le projet en suivant uniquement le README.
+- [x] `npm run dev` lance les deux serveurs, et la page fonctionne sur <http://localhost:5180>.
+- [x] `npm start` compile la page, et tout fonctionne sur <http://localhost:3100>.
+- [x] Le `.env` n'apparaît pas dans git (`git status` ne le montre pas), le `.env.example` oui.
+- [x] Quelqu'un d'autre pourrait installer et lancer le projet en suivant uniquement le README.
 
 **Critère de réussite de la semaine :** `POST /api/ai` répond, et la page React affiche la réponse en streaming. ✅
 
