@@ -1,0 +1,374 @@
+generator client {
+  provider            = "prisma-client"
+  output              = "../src/generated/prisma"
+  moduleFormat        = "esm"
+  importFileExtension = "js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Conventions : montants en Ariary (Int, jamais de float), dates de journée sans heure (@db.Date),
+// champs « …Brut » = texte tel que lu sur la photo, gardé à côté de la valeur interprétée.
+
+// ─── Comptes ────────────────────────────────────────────────────────────────
+
+model Utilisateur {
+  id             String   @id @default(uuid())
+  email          String   @unique
+  motDePasseHash String   @map("mot_de_passe_hash")
+  creeLe         DateTime @default(now()) @map("cree_le")
+  modifieLe      DateTime @updatedAt @map("modifie_le")
+
+  lots             Lot[]
+  journeesValidees Journee[]
+
+  @@map("utilisateurs")
+}
+
+// ─── Référentiels ───────────────────────────────────────────────────────────
+
+model Camion {
+  id              String   @id @default(uuid())
+  immatriculation String   @unique
+  nom             String
+  actif           Boolean  @default(true)
+  creeLe          DateTime @default(now()) @map("cree_le")
+  modifieLe       DateTime @updatedAt @map("modifie_le")
+
+  lots     Lot[]
+  photos   Photo[]
+  journees Journee[]
+
+  @@map("camions")
+}
+
+enum RolePersonne {
+  CHAUFFEUR
+  RECEVEUR
+}
+
+model Personne {
+  id        String       @id @default(uuid())
+  nom       String
+  role      RolePersonne
+  telephone String?
+  actif     Boolean      @default(true)
+  creeLe    DateTime     @default(now()) @map("cree_le")
+  modifieLe DateTime     @updatedAt @map("modifie_le")
+
+  journeesChauffeur Journee[] @relation("JourneeChauffeur")
+  journeesReceveur  Journee[] @relation("JourneeReceveur")
+
+  @@index([role])
+  @@map("personnes")
+}
+
+/// Nom canonique d'un lieu (ex. « Lalam-baovao »).
+model Lieu {
+  id     String   @id @default(uuid())
+  nom    String   @unique
+  creeLe DateTime @default(now()) @map("cree_le")
+
+  variantes          LieuVariante[]
+  voyagesOrigine     Voyage[]       @relation("VoyageOrigine")
+  voyagesDestination Voyage[]       @relation("VoyageDestination")
+
+  @@map("lieux")
+}
+
+/// Orthographe rencontrée dans le cahier, rattachée à son lieu canonique (apprise à chaque validation).
+model LieuVariante {
+  id     String   @id @default(uuid())
+  texte  String   @unique
+  lieuId String   @map("lieu_id")
+  creeLe DateTime @default(now()) @map("cree_le")
+
+  lieu Lieu @relation(fields: [lieuId], references: [id], onDelete: Cascade)
+
+  @@index([lieuId])
+  @@map("lieux_variantes")
+}
+
+// ─── Photos et extraction ───────────────────────────────────────────────────
+
+enum StatutLot {
+  RECU
+  EN_COURS
+  TERMINE
+  ERREUR
+}
+
+/// Un envoi de plusieurs photos de pages pour un même camion.
+model Lot {
+  id        String    @id @default(uuid())
+  camionId  String    @map("camion_id")
+  creeParId String    @map("cree_par_id")
+  statut    StatutLot @default(RECU)
+  creeLe    DateTime  @default(now()) @map("cree_le")
+  modifieLe DateTime  @updatedAt @map("modifie_le")
+
+  camion  Camion      @relation(fields: [camionId], references: [id])
+  creePar Utilisateur @relation(fields: [creeParId], references: [id])
+  photos  Photo[]
+
+  @@index([camionId])
+  @@index([statut])
+  @@map("lots")
+}
+
+enum StatutPhoto {
+  RECUE
+  EN_COURS
+  EXTRAITE
+  ERREUR
+}
+
+model Photo {
+  id              String      @id @default(uuid())
+  url             String
+  /// Identifiant chez l'hébergeur (public_id Cloudinary), pour pouvoir supprimer le fichier.
+  stockageId      String      @map("stockage_id")
+  largeur         Int
+  hauteur         Int
+  /// dHash 64 bits en hexadécimal : deux photos proches ont des hash proches (détection des doublons).
+  hashPerceptuel  String      @map("hash_perceptuel")
+  /// Photo déjà reçue dont celle-ci est probablement un doublon (distance de Hamming ≤ 5) ; non rejetée.
+  doublonDeId     String?     @map("doublon_de_id")
+  distanceDoublon Int?        @map("distance_doublon")
+  dateUpload      DateTime    @default(now()) @map("date_upload")
+  camionId        String      @map("camion_id")
+  lotId           String      @map("lot_id")
+  ordreDansLot    Int         @map("ordre_dans_lot")
+  statut          StatutPhoto @default(RECUE)
+
+  camion      Camion       @relation(fields: [camionId], references: [id])
+  lot         Lot          @relation(fields: [lotId], references: [id])
+  doublonDe   Photo?       @relation("DoublonPhoto", fields: [doublonDeId], references: [id], onDelete: SetNull)
+  doublons    Photo[]      @relation("DoublonPhoto")
+  extractions Extraction[]
+  voyages     Voyage[]
+  depenses    Depense[]
+  mouvements  Mouvement[]
+
+  @@unique([lotId, ordreDansLot])
+  @@index([camionId])
+  @@index([statut])
+  @@index([hashPerceptuel])
+  @@map("photos")
+}
+
+/// Un appel au modèle de vision sur une photo ; on garde toujours la réponse brute.
+model Extraction {
+  id           String   @id @default(uuid())
+  photoId      String   @map("photo_id")
+  modele       String
+  jsonBrut     Json?    @map("json_brut")
+  dureeMs      Int      @map("duree_ms")
+  /// Coût estimé : tokens envoyés et reçus (le prix diffère entre les deux).
+  tokensEntree Int?     @map("tokens_entree")
+  tokensSortie Int?     @map("tokens_sortie")
+  erreur       String?
+  creeLe       DateTime @default(now()) @map("cree_le")
+
+  photo Photo @relation(fields: [photoId], references: [id], onDelete: Cascade)
+
+  @@index([photoId])
+  @@map("extractions")
+}
+
+// ─── Journées du cahier ─────────────────────────────────────────────────────
+
+enum StatutJournee {
+  BROUILLON
+  A_VERIFIER
+  VALIDEE
+}
+
+model Journee {
+  id           String        @id @default(uuid())
+  date         DateTime      @db.Date
+  camionId     String        @map("camion_id")
+  chauffeurId  String?       @map("chauffeur_id")
+  receveurId   String?       @map("receveur_id")
+  /// true si la date n'est pas écrite dans le cahier mais déduite de la position de la page.
+  dateDeduite  Boolean       @default(false) @map("date_deduite")
+  /// Dernier « Reste » / « Reste vola » écrit ; null si aucun solde n'a été lu.
+  soldeEcrit   Int?          @map("solde_ecrit")
+  /// Recalculé par le serveur (voir src/domaine/calcul.ts).
+  soldeCalcule Int           @map("solde_calcule")
+  statut       StatutJournee @default(BROUILLON)
+  valideeParId String?       @map("validee_par_id")
+  valideeLe    DateTime?     @map("validee_le")
+  creeLe       DateTime      @default(now()) @map("cree_le")
+  modifieLe    DateTime      @updatedAt @map("modifie_le")
+
+  camion     Camion       @relation(fields: [camionId], references: [id])
+  chauffeur  Personne?    @relation("JourneeChauffeur", fields: [chauffeurId], references: [id])
+  receveur   Personne?    @relation("JourneeReceveur", fields: [receveurId], references: [id])
+  valideePar Utilisateur? @relation(fields: [valideeParId], references: [id])
+  voyages    Voyage[]
+  depenses   Depense[]
+  mouvements Mouvement[]
+  alertes    Alerte[]
+
+  @@unique([camionId, date])
+  @@index([date])
+  @@index([statut])
+  @@map("journees")
+}
+
+enum Produit {
+  SABLE
+  BRIQUE
+  MOELLON
+  GRAVILLON
+  BOIS
+  DEMENAGEMENT
+  AUTRE
+  INCONNU
+}
+
+enum StatutVoyage {
+  PAYE
+  SERVICE
+  EN_ATTENTE
+  INCONNU
+}
+
+model Voyage {
+  id               String       @id @default(uuid())
+  journeeId        String       @map("journee_id")
+  /// Numéro entouré, continu d'un jour à l'autre ; null si absent.
+  numero           Int?
+  produit          Produit
+  produitBrut      String?      @map("produit_brut")
+  quantite         Float?
+  /// « voyage » ou « pieces »
+  unite            String?
+  pieces           Int?
+  origineId        String?      @map("origine_id")
+  destinationId    String?      @map("destination_id")
+  origineBrute     String?      @map("origine_brute")
+  destinationBrute String?      @map("destination_brute")
+  montant          Int
+  /// Somme déduite sur la même ligne (« 120000 - 50000 » → 50000).
+  retenue          Int          @default(0)
+  statut           StatutVoyage
+  texteBrut        String       @map("texte_brut")
+  /// Confiance de lecture de l'IA, entre 0 et 1.
+  confiance        Float
+  photoId          String       @map("photo_id")
+
+  journee     Journee    @relation(fields: [journeeId], references: [id], onDelete: Cascade)
+  origine     Lieu?      @relation("VoyageOrigine", fields: [origineId], references: [id])
+  destination Lieu?      @relation("VoyageDestination", fields: [destinationId], references: [id])
+  photo       Photo      @relation(fields: [photoId], references: [id])
+  paiements   Paiement[]
+
+  @@index([journeeId])
+  @@index([statut])
+  @@index([numero])
+  @@map("voyages")
+}
+
+enum CategorieDepense {
+  REPAS
+  GASOIL
+  DOKERA
+  POLICE
+  MOTARD
+  CROIX
+  RISTOURNE
+  ACHAT_MARCHANDISE
+  AUTRE
+}
+
+model Depense {
+  id          String           @id @default(uuid())
+  journeeId   String           @map("journee_id")
+  categorie   CategorieDepense
+  libelleBrut String           @map("libelle_brut")
+  montant     Int
+  confiance   Float
+  photoId     String           @map("photo_id")
+
+  journee Journee @relation(fields: [journeeId], references: [id], onDelete: Cascade)
+  photo   Photo   @relation(fields: [photoId], references: [id])
+
+  @@index([journeeId])
+  @@map("depenses")
+}
+
+enum TypeMouvement {
+  /// « Vola tany an-trano » : entre dans le solde.
+  APPORT
+  REMISE
+  /// « Total vola » : total intermédiaire écrit, sert de contrôle.
+  TOTAL_ECRIT
+  AUTRE
+}
+
+model Mouvement {
+  id          String        @id @default(uuid())
+  journeeId   String        @map("journee_id")
+  type        TypeMouvement
+  libelleBrut String        @map("libelle_brut")
+  montant     Int
+  photoId     String        @map("photo_id")
+
+  journee Journee @relation(fields: [journeeId], references: [id], onDelete: Cascade)
+  photo   Photo   @relation(fields: [photoId], references: [id])
+
+  @@index([journeeId])
+  @@map("mouvements")
+}
+
+// ─── Contrôles et créances ──────────────────────────────────────────────────
+
+enum NiveauAlerte {
+  ERREUR
+  ATTENTION
+  INFO
+}
+
+model Alerte {
+  id        String       @id @default(uuid())
+  journeeId String?      @map("journee_id")
+  niveau    NiveauAlerte
+  code      String
+  message   String
+  resolue   Boolean      @default(false)
+  creeLe    DateTime     @default(now()) @map("cree_le")
+
+  journee Journee? @relation(fields: [journeeId], references: [id], onDelete: Cascade)
+
+  @@index([journeeId])
+  @@index([resolue])
+  @@map("alertes")
+}
+
+enum ModePaiement {
+  /// Encaissé : le montant entre dans la caisse du camion le jour du paiement.
+  CAISSE
+  /// Hors caisse : la créance est soldée, mais le montant ne compte pas dans la caisse.
+  HORS_CAISSE
+}
+
+/// Paiement (partiel ou total) d'un voyage « en attente » : solde la créance.
+model Paiement {
+  id       String       @id @default(uuid())
+  voyageId String       @map("voyage_id")
+  montant  Int
+  date     DateTime     @db.Date
+  mode     ModePaiement @default(CAISSE)
+  note     String?
+  creeLe   DateTime     @default(now()) @map("cree_le")
+
+  voyage Voyage @relation(fields: [voyageId], references: [id], onDelete: Cascade)
+
+  @@index([voyageId])
+  @@index([date])
+  @@map("paiements")
+}

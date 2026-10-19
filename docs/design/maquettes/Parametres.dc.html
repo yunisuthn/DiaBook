@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>DiaBook — Paramètres</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="diabook.css">
+<link rel="stylesheet" href="ds/onisoa/components/bundle.css">
+<script src="ds/onisoa/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:#b8350c}a:hover{color:#141416}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: var(--bg); color: var(--ink); font-family: var(--font-sans)">
+
+<div style="display: flex; flex-wrap: wrap; background: var(--surface)">
+<x-import component-from-global-scope="Onisoa.NavBar" name="diabook" home-href="Main.dc.html" links="{{nav}}" current="Paramètres" style="flex: 1 1 720px; min-width: 0"></x-import>
+<div style="flex: 1 0 auto; display: flex; align-items: center; justify-content: flex-end; gap: 16px; height: 56px; padding: 0 24px; border-bottom: 1px solid var(--line)">
+<span class="db-mono" style="color: var(--ink-muted)">admin@diabook.local</span>
+<a class="db-link" href="Connexion.dc.html">Déconnexion</a>
+</div>
+</div>
+
+<main style="max-width: 1120px; margin: 0 auto; padding: 48px clamp(16px, 4.5vw, 64px) 96px; display: flex; flex-direction: column; gap: 96px">
+
+<section style="display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-label">Référentiels utilisés par la lecture et les calculs</span>
+<h1 style="margin: 0; font-size: 56px; line-height: 56px; font-weight: 700; letter-spacing: -0.03em">Paramètres</h1>
+</div>
+<nav aria-label="Sections des paramètres" style="display: flex; flex-wrap: wrap; gap: 8px 24px; padding: 16px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line)">
+<a class="db-link" href="#camions">01 Camions</a>
+<a class="db-link" href="#chauffeurs">02 Chauffeurs</a>
+<a class="db-link" href="#produits">03 Produits</a>
+<a class="db-link" href="#lieux">04 Lieux</a>
+<a class="db-link" href="#lecture">05 Lecture des photos</a>
+<a class="db-link" href="#compte">06 Compte</a>
+</nav>
+</section>
+
+<section id="camions" style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="01" title="Camions" meta="2 actifs"></x-import>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>Immatriculation</th><th>Chauffeur habituel</th><th>Dernier voyage</th><th>État</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td class="db-mono">1234 TBA</td><td>Rakoto</td><td><span class="db-idx">V/22</span> <span class="db-muted">· 5 oct.</span></td><td><x-import component-from-global-scope="Onisoa.Tag">Actif</x-import></td><td class="db-num"><a class="db-link" href="#camions">Modifier</a></td></tr>
+<tr><td class="db-mono">5678 TAB</td><td>Hery</td><td><span class="db-idx">V/34</span> <span class="db-muted">· 6 oct.</span></td><td><x-import component-from-global-scope="Onisoa.Tag">Actif</x-import></td><td class="db-num"><a class="db-link" href="#camions">Modifier</a></td></tr>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px">
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">La numérotation des voyages continue d'un jour à l'autre : une page qui ne commence pas à V/23 pour 1234 TBA est signalée.</span>
+<x-import component-from-global-scope="Onisoa.Button">+ Ajouter un camion</x-import>
+</div>
+</section>
+
+<section id="chauffeurs" style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="02" title="Chauffeurs" meta="2 enregistrés"></x-import>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>Nom</th><th>Camion habituel</th><th class="db-num">Journées</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td>Rakoto</td><td class="db-mono">1234 TBA</td><td class="db-num">74</td><td class="db-num"><a class="db-link" href="#chauffeurs">Modifier</a></td></tr>
+<tr><td>Hery</td><td class="db-mono">5678 TAB</td><td class="db-num">68</td><td class="db-num"><a class="db-link" href="#chauffeurs">Modifier</a></td></tr>
+</tbody>
+</table>
+</div>
+<div style="display: flex; justify-content: flex-end">
+<x-import component-from-global-scope="Onisoa.Button">+ Ajouter un chauffeur</x-import>
+</div>
+</section>
+
+<section id="produits" style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="03" title="Produits" meta="Unité : le voyage (« Vgs »)"></x-import>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>Écrit dans le cahier</th><th>Produit</th><th>Achat lié</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td>Fasika</td><td>Sable</td><td class="db-muted">Vidim-pasika</td><td class="db-num"><a class="db-link" href="#produits">Modifier</a></td></tr>
+<tr><td>Biriky</td><td>Brique</td><td class="db-muted">—</td><td class="db-num"><a class="db-link" href="#produits">Modifier</a></td></tr>
+<tr><td>Moellon</td><td>Moellon</td><td class="db-muted">—</td><td class="db-num"><a class="db-link" href="#produits">Modifier</a></td></tr>
+<tr><td>Gravillon</td><td>Gravillon</td><td class="db-muted">Vidina gravillon</td><td class="db-num"><a class="db-link" href="#produits">Modifier</a></td></tr>
+<tr><td>Hazo</td><td>Bois</td><td class="db-muted">—</td><td class="db-num"><a class="db-link" href="#produits">Modifier</a></td></tr>
+<tr><td>Déménagement</td><td>Déménagement</td><td class="db-muted">—</td><td class="db-num"><a class="db-link" href="#produits">Modifier</a></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+<section id="lieux" style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="04" title="Lieux" meta="Variantes rapprochées à la lecture"></x-import>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>Lieu</th><th>Variantes lues sur les pages</th><th class="db-num">Voyages</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td>Ambohipanja</td><td><div style="display: flex; flex-wrap: wrap; gap: 6px"><x-import component-from-global-scope="Onisoa.Tag">Ambhpanja</x-import><x-import component-from-global-scope="Onisoa.Tag">Bohipanja</x-import></div></td><td class="db-num">61</td><td class="db-num"><a class="db-link" href="#lieux">Modifier</a></td></tr>
+<tr><td>Ambohimanarina</td><td><div style="display: flex; flex-wrap: wrap; gap: 6px"><x-import component-from-global-scope="Onisoa.Tag">Bohimanarina</x-import></div></td><td class="db-num">27</td><td class="db-num"><a class="db-link" href="#lieux">Modifier</a></td></tr>
+<tr><td>Ivato</td><td><div style="display: flex; flex-wrap: wrap; gap: 6px"><x-import component-from-global-scope="Onisoa.Tag">Ivatoo</x-import></div></td><td class="db-num">34</td><td class="db-num"><a class="db-link" href="#lieux">Modifier</a></td></tr>
+<tr><td>Itaosy</td><td><div style="display: flex; flex-wrap: wrap; gap: 6px"><x-import component-from-global-scope="Onisoa.Tag">Itaozy</x-import></div></td><td class="db-num">22</td><td class="db-num"><a class="db-link" href="#lieux">Modifier</a></td></tr>
+<tr><td>Talatamaty</td><td><div style="display: flex; flex-wrap: wrap; gap: 6px"><x-import component-from-global-scope="Onisoa.Tag">Tlt</x-import></div></td><td class="db-num">18</td><td class="db-num"><a class="db-link" href="#lieux">Modifier</a></td></tr>
+<tr><td>Andoharanofotsy</td><td><div style="display: flex; flex-wrap: wrap; gap: 6px"><x-import component-from-global-scope="Onisoa.Tag">Andohara</x-import></div></td><td class="db-num">15</td><td class="db-num"><a class="db-link" href="#lieux">Modifier</a></td></tr>
+</tbody>
+</table>
+</div>
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; gap: 16px; padding: 24px; background: var(--surface); border: 1px solid var(--line)">
+<x-import component-from-global-scope="Onisoa.Field" label="Nouveau lieu" placeholder="Analamahitsy" style="flex: 1 1 240px"></x-import>
+<x-import component-from-global-scope="Onisoa.Field" label="Variantes" placeholder="Séparées par des virgules" style="flex: 2 1 320px"></x-import>
+<x-import component-from-global-scope="Onisoa.Button">Ajouter</x-import>
+</div>
+</section>
+
+<section id="lecture" style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="05" title="Lecture des photos" meta="Lu depuis la configuration du serveur"></x-import>
+<div style="background: var(--surface); border: 1px solid var(--line-strong); padding: 24px; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-label">Modèle</span>
+<span class="db-mono">claude-opus-5-5</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-label">Clé API Anthropic</span>
+<span class="db-mono">sk-ant-…<span style="color: var(--ink-muted)">[4 derniers caractères]</span></span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-label">Stockage des photos</span>
+<span class="db-mono">Cloudinary</span>
+</div>
+<div style="display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span class="db-label">État</span>
+<x-import component-from-global-scope="Onisoa.Status" tone="live">Prêt</x-import>
+</div>
+</div>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">Ces valeurs se changent dans le fichier .env du serveur, pas depuis cette page.</span>
+</section>
+
+<section id="compte" style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="06" title="Compte" meta="Administrateur"></x-import>
+<form style="background: var(--surface); border: 1px solid var(--line-strong); padding: 24px; display: flex; flex-direction: column; gap: 24px">
+<x-import component-from-global-scope="Onisoa.Field" label="Email" type="email" default-value="admin@diabook.local" readonly="{{yes}}" hint="Défini par ADMIN_EMAIL à l'installation."></x-import>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
+<x-import component-from-global-scope="Onisoa.Field" label="Mot de passe actuel" type="password" style="max-width: none"></x-import>
+<x-import component-from-global-scope="Onisoa.Field" label="Nouveau mot de passe" type="password" hint="8 caractères minimum." style="max-width: none"></x-import>
+<x-import component-from-global-scope="Onisoa.Field" label="Confirmation" type="password" style="max-width: none"></x-import>
+</div>
+<div>
+<x-import component-from-global-scope="Onisoa.Button" variant="primary">Changer le mot de passe</x-import>
+</div>
+</form>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":2600}}'>
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      yes: true,
+      nav: [
+        { label: 'Tableau de bord', href: 'Main.dc.html' },
+        { label: 'Journées', href: 'Journees.dc.html' },
+        { label: 'Importer', href: 'Importer.dc.html' },
+        { label: 'Créances', href: 'Creances.dc.html' },
+        { label: 'Paramètres', href: 'Parametres.dc.html' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

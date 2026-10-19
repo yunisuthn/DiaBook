@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>DiaBook — Importer une page</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="diabook.css">
+<link rel="stylesheet" href="ds/onisoa/components/bundle.css">
+<script src="ds/onisoa/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:#b8350c}a:hover{color:#141416}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: var(--bg); color: var(--ink); font-family: var(--font-sans)">
+
+<div style="display: flex; flex-wrap: wrap; background: var(--surface)">
+<x-import component-from-global-scope="Onisoa.NavBar" name="diabook" home-href="Main.dc.html" links="{{nav}}" current="Importer" style="flex: 1 1 720px; min-width: 0"></x-import>
+<div style="flex: 1 0 auto; display: flex; align-items: center; justify-content: flex-end; gap: 16px; height: 56px; padding: 0 24px; border-bottom: 1px solid var(--line)">
+<span class="db-mono" style="color: var(--ink-muted)">admin@diabook.local</span>
+<a class="db-link" href="Connexion.dc.html">Déconnexion</a>
+</div>
+</div>
+
+<main style="max-width: 1120px; margin: 0 auto; padding: 48px clamp(16px, 4.5vw, 64px) 96px; display: flex; flex-direction: column; gap: 96px">
+
+<section style="display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-label">{{etapeLibelle}}</span>
+<h1 style="margin: 0; font-size: 56px; line-height: 56px; font-weight: 700; letter-spacing: -0.03em">Importer une page</h1>
+</div>
+
+<ol style="margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); border: 1px solid var(--line-strong); background: var(--surface)">
+<sc-for list="{{etapes}}" as="e" hint-placeholder-count="3">
+<li style="{{e.style}}">
+<span class="db-idx" style="{{e.indexStyle}}">{{e.index}}</span>
+<span style="font-size: 16px; line-height: 24px; font-weight: 600">{{e.label}}</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">{{e.aide}}</span>
+</li>
+</sc-for>
+</ol>
+
+<div style="display: flex; flex-wrap: wrap; gap: 32px; align-items: stretch">
+
+<sc-if value="{{etape1}}" hint-placeholder-val="{{true}}">
+<div style="flex: 999 1 560px; min-width: 0; min-height: 420px; box-sizing: border-box; padding: 48px 32px; background-color: var(--surface); border: 1px dashed var(--line-strong); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 24px; text-align: center">
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" stroke="#141416" stroke-width="1.5" stroke-linecap="square" aria-hidden="true"><rect x="6" y="13" width="36" height="26"></rect><path d="M17 13l3-5h8l3 5"></path><circle cx="24" cy="26" r="7"></circle></svg>
+<div style="display: flex; flex-direction: column; gap: 8px; max-width: 44ch">
+<h2 style="margin: 0; font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -0.01em">Photographiez la page du jour</h2>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--ink-muted)">Une page par photo. Glissez aussi un fichier ici depuis l'ordinateur.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; justify-content: center">
+<x-import component-from-global-scope="Onisoa.Button" variant="primary" on-click="{{prendre}}">Prendre une photo</x-import>
+<x-import component-from-global-scope="Onisoa.Button" on-click="{{prendre}}">Choisir un fichier</x-import>
+</div>
+<span class="db-mono" style="color: var(--ink-muted)">JPEG, PNG ou HEIC · 20 Mo max.</span>
+</div>
+</sc-if>
+
+<sc-if value="{{etape2}}" hint-placeholder-val="{{false}}">
+<div style="flex: 999 1 560px; min-width: 0; box-sizing: border-box; padding: 24px; background: var(--surface); border: 1px solid var(--line-strong); display: flex; flex-wrap: wrap; gap: 24px">
+<div class="db-photo" style="flex: 0 0 200px; height: 270px"></div>
+<div style="flex: 1 1 260px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px">
+<span class="db-mono" style="color: var(--ink-muted)">IMG_0412.jpg · 3,1 Mo</span>
+<h2 style="margin: 0; font-size: 24px; line-height: 30px; font-weight: 600; letter-spacing: -0.01em">Lecture de la page</h2>
+</div>
+<ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 12px; font-size: 16px; line-height: 24px">
+<li style="display: flex; gap: 12px"><span class="db-idx">OK</span><span>Photo envoyée et conservée</span></li>
+<li style="display: flex; gap: 12px"><span class="db-idx">OK</span><span>Image redressée et compressée</span></li>
+<li style="display: flex; gap: 12px"><span class="db-idx">…</span><span>Lecture des voyages, dépenses et du « Reste » par l'IA</span></li>
+<li style="display: flex; gap: 12px; color: var(--ink-muted)"><span class="db-mono">—</span><span>Vérification des calculs par le serveur</span></li>
+</ul>
+<div style="display: flex; flex-wrap: wrap; gap: 12px; margin-top: auto">
+<x-import component-from-global-scope="Onisoa.Button" variant="primary" arrow="{{yes}}" href="Validation.dc.html">Voir le résultat</x-import>
+<x-import component-from-global-scope="Onisoa.Button" on-click="{{annuler}}">Annuler</x-import>
+</div>
+</div>
+</div>
+</sc-if>
+
+<aside style="flex: 1 1 280px; display: flex; flex-direction: column; gap: 24px; padding: 24px; background: var(--surface); border: 1px solid var(--line)">
+<span class="db-label">Facultatif</span>
+<div style="display: flex; flex-direction: column; gap: 8px">
+<label for="import-camion" class="db-label">Camion</label>
+<select id="import-camion" class="on-input" style="width: 100%">
+<option>Lu sur la page</option>
+<option>1234 TBA</option>
+<option>5678 TAB</option>
+</select>
+</div>
+<x-import component-from-global-scope="Onisoa.Field" label="Date de la journée" type="date" hint="Vide : l'IA lit la date en haut de la page." style="max-width: none"></x-import>
+<div style="display: flex; flex-direction: column; gap: 8px; padding-top: 16px; border-top: 1px solid var(--line)">
+<span class="db-label">Pour une bonne lecture</span>
+<ul style="margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 20px; color: var(--ink-muted)">
+<li>Page entière dans le cadre, à plat.</li>
+<li>Lumière du jour, sans reflet ni ombre de la main.</li>
+<li>Une seule journée par photo.</li>
+</ul>
+</div>
+</aside>
+
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="02" title="Imports récents" meta="Photos et extractions conservées"></x-import>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>Importée</th><th>Journée lue</th><th>Camion</th><th>État</th><th></th></tr>
+</thead>
+<tbody>
+<tr><td class="db-mono">7 oct. 09:42</td><td class="db-muted">—</td><td class="db-mono">1234 TBA</td><td><x-import component-from-global-scope="Onisoa.Tag">Lecture en cours</x-import></td><td class="db-num"></td></tr>
+<tr class="db-row-alerte"><td class="db-mono">6 oct. 18:10</td><td>Mar. 6 oct.</td><td class="db-mono">5678 TAB</td><td><x-import component-from-global-scope="Onisoa.Tag" active="{{yes}}">Écart 20 000</x-import></td><td class="db-num"><a class="db-link" href="Validation.dc.html">Vérifier →</a></td></tr>
+<tr><td class="db-mono">6 oct. 18:05</td><td>Mar. 6 oct.</td><td class="db-mono">1234 TBA</td><td><x-import component-from-global-scope="Onisoa.Tag">À valider</x-import></td><td class="db-num"><a class="db-link" href="Validation.dc.html">Vérifier →</a></td></tr>
+<tr><td class="db-mono">5 oct. 19:20</td><td>Lun. 5 oct.</td><td class="db-mono">1234 TBA</td><td><x-import component-from-global-scope="Onisoa.Tag">Validée</x-import></td><td class="db-num"><a class="db-link" href="Journees.dc.html">Journée</a></td></tr>
+<tr><td class="db-mono">5 oct. 19:02</td><td class="db-muted">Illisible</td><td class="db-mono">5678 TAB</td><td><x-import component-from-global-scope="Onisoa.Tag">Photo floue</x-import></td><td class="db-num"><a class="db-link" href="Importer.dc.html">Reprendre</a></td></tr>
+</tbody>
+</table>
+</div>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var etape = (this.state && this.state.etape) || 1;
+    var defs = [
+      { index: '01', label: 'Photo', aide: 'Prendre ou choisir la page' },
+      { index: '02', label: "Lecture par l'IA", aide: 'Environ 30 secondes' },
+      { index: '03', label: 'Validation', aide: 'Vous vérifiez et enregistrez' }
+    ];
+    var etapes = defs.map(function (d, i) {
+      var n = i + 1;
+      var courante = n === etape;
+      return Object.assign({}, d, {
+        style: 'display: flex; flex-direction: column; gap: 4px; padding: 16px 24px; border-right: 1px solid var(--line); box-shadow: ' + (courante ? 'inset 0 -3px 0 var(--signal)' : 'none') + '; opacity: ' + (n > etape ? '0.6' : '1'),
+        indexStyle: courante ? '' : 'color: var(--ink-muted)'
+      });
+    });
+    return {
+      yes: true,
+      etapes: etapes,
+      etape1: etape === 1,
+      etape2: etape === 2,
+      etapeLibelle: 'Étape ' + etape + ' sur 3',
+      prendre: function () { self.setState({ etape: 2 }); },
+      annuler: function () { self.setState({ etape: 1 }); },
+      nav: [
+        { label: 'Tableau de bord', href: 'Main.dc.html' },
+        { label: 'Journées', href: 'Journees.dc.html' },
+        { label: 'Importer', href: 'Importer.dc.html' },
+        { label: 'Créances', href: 'Creances.dc.html' },
+        { label: 'Paramètres', href: 'Parametres.dc.html' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

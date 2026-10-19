@@ -1,0 +1,13 @@
+node_modules
+dist
+coverage
+.env
+*.log
+apps/api/src/generated
+apps/api/uploads
+
+# Données réelles des cahiers : jamais dans le dépôt (il est public)
+cahier-extract/photos/
+cahier-extract/out/
+cahier-extract/journees.json
+cahier-extract/rapport.md

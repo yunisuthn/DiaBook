@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>DiaBook — Connexion</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="diabook.css">
+<link rel="stylesheet" href="ds/onisoa/components/bundle.css">
+<script src="ds/onisoa/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:#b8350c}a:hover{color:#141416}
+</style>
+</helmet>
+<div style="min-height: 100vh; display: flex; flex-wrap: wrap; background: var(--bg); color: var(--ink); font-family: var(--font-sans)">
+
+<section style="flex: 1 1 560px; min-height: 420px; box-sizing: border-box; padding: clamp(32px, 6vw, 96px) clamp(16px, 5vw, 80px); display: flex; flex-direction: column; justify-content: space-between; gap: 48px; background-color: var(--bg); background-image: radial-gradient(circle, var(--grid) 1.2px, transparent 1.4px); background-size: 24px 24px; border-right: 1px solid var(--line)">
+<span style="font-size: 22px; line-height: 28px; font-weight: 700; letter-spacing: -0.02em">diabook<span style="font-family: var(--font-mono); font-weight: 400; color: var(--signal-text)">_</span></span>
+<div style="display: flex; flex-direction: column; gap: 24px; max-width: 620px">
+<span class="db-label" style="color: var(--signal-text)">Cahier de bord numérisé</span>
+<h1 style="margin: 0; font-size: clamp(44px, 6vw, 88px); line-height: 0.96; font-weight: 700; letter-spacing: -0.035em">Le cahier de bord, relu et vérifié.</h1>
+<p style="margin: 0; font-size: 19px; line-height: 30px; color: var(--ink-muted); max-width: 46ch">Photographiez la page du jour. L'IA lit les voyages et les dépenses, le serveur refait les calculs, vous validez.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 24px">
+<span class="db-mono" style="color: var(--ink-muted)">Antananarivo · UTC+3</span>
+<span class="db-mono" style="color: var(--ink-muted)">Montants en Ariary</span>
+</div>
+</section>
+
+<section style="flex: 1 1 440px; box-sizing: border-box; padding: clamp(32px, 6vw, 96px) clamp(16px, 5vw, 80px); display: flex; align-items: center; justify-content: center; background: var(--surface)">
+<form style="width: 100%; max-width: 400px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-idx">01</span>
+<h2 style="margin: 0; font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">Connexion</h2>
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--ink-muted)">Compte administrateur.</p>
+</div>
+<x-import component-from-global-scope="Onisoa.Field" label="Email" type="email" placeholder="admin@diabook.local" style="width: 100%"></x-import>
+<x-import component-from-global-scope="Onisoa.Field" label="Mot de passe" type="password" default-value="motdepasse" error="{{erreur}}" style="width: 100%"></x-import>
+<x-import component-from-global-scope="Onisoa.Button" variant="primary" arrow="{{yes}}" on-click="{{essayer}}" style="align-self: stretch">Se connecter</x-import>
+<a href="Main.dc.html" class="db-link" style="align-self: flex-start">Aperçu : ouvrir le tableau de bord</a>
+</form>
+</section>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"afficherErreur":{"editor":"boolean","default":true,"section":"États"},"$preview":{"width":1440,"height":900}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var erreur = (this.state && this.state.erreur !== undefined) ? this.state.erreur : (this.props.afficherErreur ?? true);
+    return {
+      yes: true,
+      erreur: erreur ? 'Email ou mot de passe incorrect. Vérifiez la saisie et réessayez.' : undefined,
+      essayer: function () { self.setState({ erreur: true }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

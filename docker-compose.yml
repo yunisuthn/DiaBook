@@ -1,0 +1,25 @@
+# PostgreSQL pour le développement local.
+# Exposé sur le port 5434 de l'hôte (5432 et 5433 sont déjà utilisés sur ce poste),
+# uniquement en local (127.0.0.1) : les autres machines du réseau n'y ont pas accès.
+# Identifiants lus dans .env (POSTGRES_USER / POSTGRES_PASSWORD / POSTGRES_DB).
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: diabook-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-diabook}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-diabook}
+      POSTGRES_DB: ${POSTGRES_DB:-diabook}
+    ports:
+      - '127.0.0.1:5434:5432'
+    volumes:
+      - diabook-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  diabook-pgdata:

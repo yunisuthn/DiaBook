@@ -1,0 +1,66 @@
+/* DiaBook — variables du design system Onisoa (thème clair) et quelques classes d'application.
+   Les composants Onisoa (ds/onisoa/components/bundle.css) lisent ces variables. */
+:root {
+  --bg: #f3f2ee;
+  --surface: #fbfaf7;
+  --surface-sunk: #e8e6df;
+  --line: #d9d6cd;
+  --line-strong: #85827a;
+  --grid: #cfccc2;
+  --ink: #141416;
+  --ink-muted: #57554f;
+  --signal: #ff4f1f;
+  --on-signal: #141416;
+  --signal-text: #b8350c;
+  --signal-soft: #ffe3d8;
+  --live: #2b6e2f;
+  --live-soft: #dcefd6;
+  --font-sans: "Schibsted Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Martian Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-24: 96px;
+  --radius-0: 0px;
+  --radius-sm: 2px;
+  --radius-dot: 999px;
+  --shadow-offset: 4px 4px 0 0 #141416;
+}
+
+html, body { background: var(--bg); }
+
+/* Libellé mono capitales (style « label ») */
+.db-label { font-family: var(--font-mono); font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); }
+.db-mono { font-family: var(--font-mono); font-size: 13px; line-height: 22px; }
+.db-idx { font-family: var(--font-mono); font-size: 13px; line-height: 22px; color: var(--signal-text); white-space: nowrap; }
+.db-num { font-variant-numeric: tabular-nums; text-align: right; white-space: nowrap; }
+
+/* Tableaux : carrés, filets, défilement horizontal sur téléphone */
+.db-table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--line-strong); }
+.db-table { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 22px; }
+.db-table th { font-family: var(--font-mono); font-size: 11px; line-height: 16px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-muted); text-align: left; padding: 12px 16px; border-bottom: 1px solid var(--line-strong); white-space: nowrap; }
+.db-table th.db-num { text-align: right; }
+.db-table td { padding: 12px 16px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.db-table tbody tr:last-child td { border-bottom: 0; }
+.db-table tfoot td { border-top: 1px solid var(--line-strong); border-bottom: 0; font-weight: 600; }
+.db-table .db-muted { color: var(--ink-muted); }
+.db-table tr.db-row-alerte td { background: var(--signal-soft); }
+
+/* Photo de page du cahier : emplacement réservé, papier réglé */
+.db-photo { background-color: var(--surface-sunk); border: 1px solid var(--line); background-image: repeating-linear-gradient(to bottom, transparent 0 27px, var(--line) 27px 28px); }
+
+/* Liens d'action dans les tableaux */
+.db-link { color: var(--signal-text); text-decoration: none; font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; }
+.db-link:hover { text-decoration: underline; text-underline-offset: 4px; }
+.db-link:focus-visible { outline: 2px solid var(--signal-text); outline-offset: 2px; }
+
+/* Barre de navigation Onisoa : passe sur plusieurs lignes sur téléphone */
+@media (max-width: 720px) {
+  .on-nav { height: auto; flex-wrap: wrap; padding: 12px 16px; row-gap: 8px; }
+  .on-nav ul { flex-wrap: wrap; gap: 8px 16px; }
+}

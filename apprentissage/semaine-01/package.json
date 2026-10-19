@@ -1,0 +1,28 @@
+{
+  "name": "diabook-semaine-01",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Semaine 1 : appeler un LLM (Gemini) depuis Node.js",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "concurrently -k -n api,page -c blue,magenta \"npm run dev -w server\" \"npm run dev -w client\"",
+    "build": "npm run build -w client",
+    "start": "npm run build && npm start -w server",
+    "models": "node scripts/models.js",
+    "hello": "node scripts/hello.js",
+    "ask": "node scripts/ask.js"
+  },
+  "dependencies": {
+    "@google/genai": "2.30.0"
+  },
+  "workspaces": [
+    "server",
+    "client"
+  ],
+  "devDependencies": {
+    "concurrently": "10.0.6"
+  }
+}

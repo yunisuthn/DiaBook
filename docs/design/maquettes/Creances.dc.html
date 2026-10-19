@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>DiaBook — Créances</title>
+<script src="./support.js"></script>
+<link rel="stylesheet" href="diabook.css">
+<link rel="stylesheet" href="ds/onisoa/components/bundle.css">
+<script src="ds/onisoa/components/bundle.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<style>
+body{margin:0}
+a{color:#b8350c}a:hover{color:#141416}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: var(--bg); color: var(--ink); font-family: var(--font-sans)">
+
+<div style="display: flex; flex-wrap: wrap; background: var(--surface)">
+<x-import component-from-global-scope="Onisoa.NavBar" name="diabook" home-href="Main.dc.html" links="{{nav}}" current="Créances" style="flex: 1 1 720px; min-width: 0"></x-import>
+<div style="flex: 1 0 auto; display: flex; align-items: center; justify-content: flex-end; gap: 16px; height: 56px; padding: 0 24px; border-bottom: 1px solid var(--line)">
+<span class="db-mono" style="color: var(--ink-muted)">admin@diabook.local</span>
+<a class="db-link" href="Connexion.dc.html">Déconnexion</a>
+</div>
+</div>
+
+<main style="max-width: 1120px; margin: 0 auto; padding: 48px clamp(16px, 4.5vw, 64px) 96px; display: flex; flex-direction: column; gap: 96px">
+
+<section style="display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<span class="db-label">« Miandry vola » · voyages livrés, pas encore payés</span>
+<h1 style="margin: 0; font-size: 56px; line-height: 56px; font-weight: 700; letter-spacing: -0.03em">Créances</h1>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
+<div style="background: var(--surface); border: 1px solid var(--ink); box-shadow: inset 0 3px 0 var(--signal); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="db-label" style="color: var(--ink)">Reste à encaisser</span>
+<span class="db-num" style="text-align: left; font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">{{totalDu}} <span style="font-size: 16px; font-weight: 500; color: var(--ink-muted)">Ar</span></span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">{{nbDu}}</span>
+</div>
+<div style="background: var(--surface); border: 1px solid var(--line-strong); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="db-label">La plus ancienne</span>
+<span style="font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">{{plusAncienne}}</span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">{{plusAncienneDetail}}</span>
+</div>
+<div style="background: var(--surface); border: 1px solid var(--line-strong); padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<span class="db-label">Entré en caisse en octobre</span>
+<span class="db-num" style="text-align: left; font-size: 36px; line-height: 40px; font-weight: 600; letter-spacing: -0.02em">{{totalEncaisse}} <span style="font-size: 16px; font-weight: 500; color: var(--ink-muted)">Ar</span></span>
+<span style="font-size: 14px; line-height: 20px; color: var(--ink-muted)">{{nbEncaisse}}</span>
+</div>
+</div>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="01" title="En attente" meta="Du plus ancien au plus récent"></x-import>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<sc-for list="{{filtres}}" as="f" hint-placeholder-count="4">
+<x-import component-from-global-scope="Onisoa.Tag" active="{{f.active}}" on-click="{{f.pick}}">{{f.label}}</x-import>
+</sc-for>
+</div>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>N°</th><th>Voyage du</th><th>Camion</th><th>Produit</th><th>Trajet</th><th class="db-num">Montant</th><th>Attente</th><th></th></tr>
+</thead>
+<tbody>
+<sc-for list="{{attente}}" as="c" hint-placeholder-count="3">
+<tr>
+<td class="db-idx">V/{{c.n}}</td>
+<td style="white-space: nowrap">{{c.date}}</td>
+<td class="db-mono">{{c.camion}}</td>
+<td>{{c.produit}} <span class="db-muted">· {{c.qte}}</span></td>
+<td>{{c.trajet}}</td>
+<td class="db-num">{{c.montantTexte}}</td>
+<td><x-import component-from-global-scope="Onisoa.Tag" active="{{c.ancienne}}">{{c.age}}</x-import></td>
+<td><div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 8px 16px"><x-import component-from-global-scope="Onisoa.Button" on-click="{{c.encaisser}}">Encaisser</x-import><x-import component-from-global-scope="Onisoa.Button" variant="link" on-click="{{c.horsCaisse}}">Payée hors caisse</x-import></div></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<sc-if value="{{aucune}}" hint-placeholder-val="{{false}}">
+<p style="margin: 0; font-size: 16px; line-height: 26px; color: var(--ink-muted)">Aucune créance pour ce filtre.</p>
+</sc-if>
+</section>
+
+<section style="display: flex; flex-direction: column; gap: 32px">
+<x-import component-from-global-scope="Onisoa.SectionHeader" index="02" title="Payées" meta="Octobre 2026"></x-import>
+<div class="db-table-wrap">
+<table class="db-table">
+<thead>
+<tr><th>N°</th><th>Voyage du</th><th>Camion</th><th>Trajet</th><th class="db-num">Montant</th><th>Payée le</th><th>Caisse</th><th></th></tr>
+</thead>
+<tbody>
+<sc-for list="{{encaissees}}" as="c" hint-placeholder-count="2">
+<tr>
+<td class="db-idx">V/{{c.n}}</td>
+<td style="white-space: nowrap">{{c.date}}</td>
+<td class="db-mono">{{c.camion}}</td>
+<td>{{c.trajet}}</td>
+<td class="db-num">{{c.montantTexte}}</td>
+<td class="db-mono">{{c.encaisseLe}}</td>
+<td><x-import component-from-global-scope="Onisoa.Tag" active="{{c.enCaisse}}">{{c.caisseTexte}}</x-import></td>
+<td><div style="display: flex; flex-wrap: wrap; justify-content: flex-end; gap: 8px 16px">
+<button type="button" class="on-btn on-btn-link" onClick="{{c.basculer}}">{{c.basculerTexte}}</button>
+<sc-if value="{{c.annulable}}" hint-placeholder-val="{{false}}"><button type="button" class="on-btn on-btn-link" onClick="{{c.annuler}}">Annuler</button></sc-if>
+</div></td>
+</tr>
+</sc-for>
+</tbody>
+</table>
+</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: var(--ink-muted)">Encaissée : le montant entre dans le solde de la journée du paiement, pour ce camion. Hors caisse : la créance est soldée, mais le montant ne compte pas dans le solde.</p>
+</section>
+
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1300}}'>
+class Component extends DCLogic {
+  renderVals() {
+    var self = this;
+    var s = this.state || {};
+    var fmt = function (n) { return n.toLocaleString('fr-FR'); };
+    var toutes = [
+      { n: 12, date: '29 sept.', camion: '1234 TBA', produit: 'Biriky', qte: '2 Vgs', trajet: 'Ambohimanarina → Itaosy', montant: 400000, jours: 8 },
+      { n: 20, date: '5 oct.', camion: '1234 TBA', produit: 'Gravillon', qte: '1 Vgs', trajet: 'Ivato → Talatamaty', montant: 150000, jours: 2 },
+      { n: 34, date: '6 oct.', camion: '5678 TAB', produit: 'Fasika', qte: '1 Vgs', trajet: 'Ambohipanja → Talatamaty', montant: 140000, jours: 1 }
+    ];
+    var historique = [
+      { n: 27, date: '1er oct.', camion: '5678 TAB', trajet: 'Ambohipanja → Ivato', montant: 150000, encaisseLe: '4 oct.' },
+      { n: 7, date: '26 sept.', camion: '1234 TBA', trajet: 'Ambohimanarina → Analamahitsy', montant: 180000, encaisseLe: '2 oct.' }
+    ];
+    // Mode de paiement par n° de voyage : 'caisse' (encaissée) ou 'hors' (payée hors caisse).
+    var modes = Object.assign({ 27: 'caisse', 7: 'hors' }, s.modes || {});
+    var payees = s.payees || [];
+    var filtre = s.filtre || 'toutes';
+    var changerMode = function (n, mode) { var m = Object.assign({}, s.modes || {}); m[n] = mode; return m; };
+    var payer = function (n, mode) { self.setState({ payees: payees.concat([n]), modes: changerMode(n, mode) }); };
+
+    var enAttente = toutes.filter(function (c) { return payees.indexOf(c.n) < 0; });
+    var visibles = enAttente.filter(function (c) {
+      if (filtre === 'anciennes') return c.jours > 7;
+      if (filtre === 'toutes') return true;
+      return c.camion === filtre;
+    });
+    var attente = visibles.map(function (c) {
+      return Object.assign({}, c, {
+        montantTexte: fmt(c.montant),
+        age: c.jours + (c.jours > 1 ? ' jours' : ' jour'),
+        ancienne: c.jours > 7,
+        encaisser: function () { payer(c.n, 'caisse'); },
+        horsCaisse: function () { payer(c.n, 'hors'); }
+      });
+    });
+    var nouvelles = toutes.filter(function (c) { return payees.indexOf(c.n) >= 0; }).map(function (c) {
+      return { n: c.n, date: c.date, camion: c.camion, trajet: c.trajet, montant: c.montant, encaisseLe: '7 oct.', annulable: true,
+        annuler: function () { self.setState({ payees: payees.filter(function (p) { return p !== c.n; }) }); } };
+    });
+    var encaissees = nouvelles.concat(historique).map(function (c) {
+      var enCaisse = modes[c.n] === 'caisse';
+      return Object.assign({}, c, {
+        montantTexte: fmt(c.montant),
+        enCaisse: enCaisse,
+        caisseTexte: enCaisse ? 'Caisse du ' + c.encaisseLe : 'Hors caisse',
+        basculerTexte: enCaisse ? 'Retirer de la caisse' : 'Encaisser',
+        basculer: function () { self.setState({ modes: changerMode(c.n, enCaisse ? 'hors' : 'caisse') }); }
+      });
+    });
+
+    var totalDu = enAttente.reduce(function (t, c) { return t + c.montant; }, 0);
+    var enCaisse = encaissees.filter(function (c) { return c.enCaisse; });
+    var horsCaisse = encaissees.filter(function (c) { return !c.enCaisse; });
+    var totalEncaisse = enCaisse.reduce(function (t, c) { return t + c.montant; }, 0);
+    var totalHors = horsCaisse.reduce(function (t, c) { return t + c.montant; }, 0);
+    var ancienne = enAttente[0];
+    var pluriel = function (n, mot) { return n + ' ' + mot + (n > 1 ? 's' : ''); };
+
+    var filtres = [
+      { id: 'toutes', label: 'Toutes' },
+      { id: 'anciennes', label: 'Plus de 7 jours' },
+      { id: '1234 TBA', label: '1234 TBA' },
+      { id: '5678 TAB', label: '5678 TAB' }
+    ].map(function (f) {
+      return { label: f.label, active: f.id === filtre, pick: function () { self.setState({ filtre: f.id }); } };
+    });
+
+    return {
+      filtres: filtres,
+      attente: attente,
+      aucune: attente.length === 0,
+      encaissees: encaissees,
+      totalDu: fmt(totalDu),
+      nbDu: pluriel(enAttente.length, 'voyage') + ' en attente de paiement',
+      plusAncienne: ancienne ? pluriel(ancienne.jours, 'jour') : '—',
+      plusAncienneDetail: ancienne ? 'V/' + ancienne.n + ' du ' + ancienne.date + ' · ' + fmt(ancienne.montant) + ' Ar' : 'Aucune créance en cours',
+      totalEncaisse: fmt(totalEncaisse),
+      nbEncaisse: pluriel(enCaisse.length, 'créance') + ' ' + (enCaisse.length > 1 ? 'encaissées' : 'encaissée') + (horsCaisse.length ? ' · ' + fmt(totalHors) + ' Ar hors caisse' : ''),
+      nav: [
+        { label: 'Tableau de bord', href: 'Main.dc.html' },
+        { label: 'Journées', href: 'Journees.dc.html' },
+        { label: 'Importer', href: 'Importer.dc.html' },
+        { label: 'Créances', href: 'Creances.dc.html' },
+        { label: 'Paramètres', href: 'Parametres.dc.html' }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

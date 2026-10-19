@@ -1,0 +1,141 @@
+@import 'tailwindcss';
+
+/*
+ * Thème DiaBook = design system « Onisoa » : papier graphite, encre presque noire,
+ * un seul accent vermillon (signal). Carré par défaut, mono pour les métadonnées.
+ */
+@theme {
+  --color-*: initial;
+  --color-bg: #f3f2ee;
+  --color-surface: #fbfaf7;
+  --color-surface-sunk: #e8e6df;
+  --color-line: #d9d6cd;
+  --color-line-strong: #85827a;
+  --color-grid: #cfccc2;
+  --color-ink: #141416;
+  --color-ink-muted: #57554f;
+  /* signal est un fond, jamais une couleur de texte : en texte, utiliser signal-text */
+  --color-signal: #ff4f1f;
+  --color-on-signal: #141416;
+  --color-signal-text: #b8350c;
+  --color-signal-soft: #ffe3d8;
+  --color-live: #2b6e2f;
+  --color-live-soft: #dcefd6;
+
+  --font-sans: 'Schibsted Grotesk', 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'Martian Mono', 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --text-display: 56px;
+  --text-display--line-height: 56px;
+  --text-display--letter-spacing: -0.03em;
+  --text-display--font-weight: 700;
+  --text-h1: 36px;
+  --text-h1--line-height: 40px;
+  --text-h1--letter-spacing: -0.02em;
+  --text-h1--font-weight: 600;
+  --text-h2: 24px;
+  --text-h2--line-height: 30px;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h2--font-weight: 600;
+  --text-body-lg: 19px;
+  --text-body-lg--line-height: 30px;
+  --text-body: 16px;
+  --text-body--line-height: 26px;
+  --text-small: 14px;
+  --text-small--line-height: 20px;
+  --text-code: 13px;
+  --text-code--line-height: 22px;
+  --text-label: 11px;
+  --text-label--line-height: 16px;
+  --text-label--letter-spacing: 0.08em;
+  --text-label--font-weight: 500;
+
+  --radius-sm: 2px;
+  --shadow-offset: 4px 4px 0 0 #141416;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #0f1012;
+    --color-surface: #17181b;
+    --color-surface-sunk: #08090a;
+    --color-line: #2a2c30;
+    --color-line-strong: #6c6f76;
+    --color-grid: #24262a;
+    --color-ink: #ecebe6;
+    --color-ink-muted: #a29f97;
+    --color-signal: #ff6a3d;
+    --color-on-signal: #0f1012;
+    --color-signal-text: #ff8257;
+    --color-signal-soft: #3b1a0f;
+    --color-live: #8fd18a;
+    --color-live-soft: #16301a;
+    --shadow-offset: 4px 4px 0 0 #ff6a3d;
+  }
+}
+
+@layer base {
+  html {
+    color-scheme: light dark;
+  }
+  body {
+    @apply bg-bg font-sans text-body text-ink antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-signal-text);
+    outline-offset: 2px;
+  }
+}
+
+/* Libellé mono en capitales : navigation, métadonnées, boutons, étiquettes. */
+@utility etiquette {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  line-height: var(--text-label--line-height);
+  font-weight: var(--text-label--font-weight);
+  letter-spacing: var(--text-label--letter-spacing);
+  text-transform: uppercase;
+}
+
+/* Montants : chiffres alignés, jamais coupés. */
+@utility chiffres {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+/* Emplacement d'une photo de page du cahier : papier réglé. */
+@utility papier-regle {
+  background-color: var(--color-surface-sunk);
+  background-image: repeating-linear-gradient(
+    to bottom,
+    transparent 0 27px,
+    var(--color-line) 27px 28px
+  );
+}
+
+/* Grille de points, réservée à l'accroche de la page de connexion. */
+@utility grille-points {
+  background-image: radial-gradient(circle, var(--color-grid) 1.2px, transparent 1.4px);
+  background-size: 24px 24px;
+}
+
+@layer components {
+  .tableau {
+    @apply w-full border-collapse text-[15px] leading-[22px];
+  }
+  .tableau th {
+    @apply etiquette border-b border-line-strong px-4 py-3 text-left whitespace-nowrap text-ink-muted;
+  }
+  .tableau td {
+    @apply border-b border-line px-4 py-3 align-middle;
+  }
+  .tableau tbody tr:last-child td {
+    @apply border-b-0;
+  }
+  .tableau tfoot td {
+    @apply border-t border-b-0 border-line-strong font-semibold;
+  }
+  .tableau .num {
+    @apply chiffres text-right;
+  }
+}

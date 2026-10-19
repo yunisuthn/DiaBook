@@ -1,0 +1,106 @@
+{
+  "v": 3,
+  "attachments": {},
+  "boards": {
+    "Connexion.dc.html": {
+      "expand": "fill",
+      "h": 900,
+      "is_interactive": true,
+      "title": "Connexion",
+      "w": 1440,
+      "x": 0,
+      "y": 0
+    },
+    "Creances.dc.html": {
+      "expand": "fill",
+      "h": 1300,
+      "is_interactive": true,
+      "title": "Créances",
+      "w": 1440,
+      "x": 3040,
+      "y": 2080
+    },
+    "Importer.dc.html": {
+      "expand": "fill",
+      "h": 1300,
+      "is_interactive": true,
+      "title": "Importer",
+      "w": 1440,
+      "x": 0,
+      "y": 2080
+    },
+    "Journees.dc.html": {
+      "expand": "fill",
+      "h": 1960,
+      "is_interactive": true,
+      "title": "Journées",
+      "w": 1440,
+      "x": 3040,
+      "y": 0
+    },
+    "Main.dc.html": {
+      "expand": "fill",
+      "h": 1560,
+      "is_interactive": true,
+      "title": "Tableau de bord",
+      "w": 1440,
+      "x": 1520,
+      "y": 0
+    },
+    "Parametres.dc.html": {
+      "expand": "fill",
+      "h": 2600,
+      "is_interactive": true,
+      "title": "Paramètres",
+      "w": 1440,
+      "x": 0,
+      "y": 4400
+    },
+    "Validation.dc.html": {
+      "expand": "fill",
+      "h": 2200,
+      "is_interactive": true,
+      "title": "Importer › Validation",
+      "w": 1440,
+      "x": 1520,
+      "y": 2080
+    }
+  },
+  "createdOnFiles": {
+    "at": "2026-10-07T07:55:00Z",
+    "v": 1
+  },
+  "designSystems": [
+    {
+      "artifact": "https://claude.ai/artifact/5sGE9B8bVZZD9csF8UQrtE",
+      "copiedAt": "2026-10-07T07:55:00Z",
+      "namespace": "onisoa",
+      "title": "Onisoa",
+      "version": "1791367725-cf01"
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  },
+  "notes": {
+    "titre": {
+      "kind": "title1",
+      "maxW": 4480,
+      "text": "DiaBook — écrans de l'application",
+      "w": 240,
+      "x": 0,
+      "y": -300
+    }
+  },
+  "order": [
+    "Connexion.dc.html",
+    "Main.dc.html",
+    "Journees.dc.html",
+    "Importer.dc.html",
+    "Validation.dc.html",
+    "Creances.dc.html",
+    "Parametres.dc.html"
+  ],
+  "pages": [],
+  "title": "DiaBook — Écrans"
+}

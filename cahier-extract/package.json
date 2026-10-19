@@ -1,0 +1,14 @@
+{
+  "name": "cahier-extract",
+  "version": "0.1.0",
+  "description": "Prototype : extraction des cahiers de bord manuscrits (photo → JSON) + fusion + contrôles",
+  "type": "module",
+  "scripts": {
+    "extract": "node src/extract.js",
+    "rapport": "node src/run.js out"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.60.0",
+    "sharp": "^0.34.0"
+  }
+}
