@@ -129,5 +129,41 @@ SOLDE ÉCRIT : <montant> Ar
 INCONNU : <mot tel qu'écrit>
 `.trim();
 
-export const PROMPTS = { v0, v1, v1_1 };
-export const DERNIERE_VERSION = 'v1_1';
+// v2 — étape 3 : MÊMES instructions que v1_1, plus des exemples (few-shot).
+// On ne change qu'une chose à la fois : si la lecture s'améliore, on sait que c'est grâce aux exemples.
+const v2 = v1_1;
+
+// Exemples « ligne du cahier → réponse attendue », envoyés au modèle avant la vraie ligne.
+// Règles pour de bons exemples :
+// - ils sont INVENTÉS et DIFFÉRENTS des lignes de test (donnees/lignes.js) : sinon le modèle
+//   recopierait les réponses et le test ne mesurerait plus rien ;
+// - ils couvrent les cas difficiles : retenue, Service, mot inconnu, total écrit ;
+// - ils respectent exactement les règles et le format du prompt : le modèle imite ce qu'il voit.
+const EXEMPLES_V2 = [
+  {
+    ligne: '* Hazo 1vgs ⑫ Andoharanofotsy -> Itaosy Vola 80000 - 10000Ar',
+    reponse:
+      'VOYAGE n°12 : 1 voyage de bois, Andoharanofotsy → Itaosy, 80000 Ar, retenue 10000 Ar, payé',
+  },
+  {
+    ligne: '* Moellon 2vgs service tsy vola ③ Ambohidratrimo -> Anosy',
+    reponse:
+      'VOYAGE n°3 : 2 voyages de moellon, Ambohidratrimo → Anosy, montant non écrit, retenue aucune, payé directement',
+  },
+  {
+    ligne: 'Police 10000 / Vidim-pasika 40000 / Lamba 2000',
+    reponse: [
+      'DÉPENSE : police 10000 Ar',
+      'DÉPENSE : achat de sable 40000 Ar',
+      'INCONNU : Lamba',
+    ].join('\n'),
+  },
+  {
+    ligne: 'Total vola 250000',
+    reponse: 'MOUVEMENT : total écrit 250000 Ar',
+  },
+];
+
+export const PROMPTS = { v0, v1, v1_1, v2 };
+export const EXEMPLES = { v2: EXEMPLES_V2 };
+export const DERNIERE_VERSION = 'v2';

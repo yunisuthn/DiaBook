@@ -5,11 +5,14 @@
 //   npm run lire -- --version v0          → toutes les lignes, avec la version v0
 //   npm run lire -- 7                     → seulement la 7e ligne
 //   npm run lire -- "ma ligne" --version v1
+//
+// Si la version a des exemples (few-shot), ils sont envoyés avant la ligne, sous forme
+// de faux échanges précédents : « utilisateur : ligne » → « modèle : réponse attendue ».
 
 import { parseArgs } from 'node:util';
 import { creerClient, expliquerErreur, MODELE } from '../lib/gemini.js';
 import { LIGNES } from '../donnees/lignes.js';
-import { PROMPTS, DERNIERE_VERSION } from '../prompts/cahier.js';
+import { PROMPTS, EXEMPLES, DERNIERE_VERSION } from '../prompts/cahier.js';
 
 const { values: options, positionals } = parseArgs({
   allowPositionals: true,
@@ -33,7 +36,18 @@ const lignes = !argument
     ? [LIGNES[numero - 1]]
     : [argument];
 
-console.log(`Modèle : ${MODELE} · prompt ${options.version} · température 0\n`);
+const exemples = EXEMPLES[options.version] ?? [];
+
+// Les exemples deviennent un historique de conversation : chaque message a un rôle,
+// « user » (ce qu'on envoie) ou « model » (ce que le modèle est censé avoir répondu).
+const historiqueExemples = exemples.flatMap(({ ligne, reponse }) => [
+  { role: 'user', parts: [{ text: ligne }] },
+  { role: 'model', parts: [{ text: reponse }] },
+]);
+
+console.log(
+  `Modèle : ${MODELE} · prompt ${options.version} · ${exemples.length} exemple(s) · température 0\n`,
+);
 
 const total = { entree: 0, sortie: 0, inconnus: 0 };
 try {
@@ -43,7 +57,7 @@ try {
   for (const [i, ligne] of lignes.entries()) {
     const reponse = await ai.models.generateContent({
       model: MODELE,
-      contents: ligne,
+      contents: [...historiqueExemples, { role: 'user', parts: [{ text: ligne }] }],
       config: { temperature: 0, systemInstruction: prompt },
     });
 
