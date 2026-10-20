@@ -9,6 +9,7 @@
   },
   "scripts": {
     "comparer": "node scripts/comparer.js",
+    "lire": "node scripts/lire.js",
     "models": "node scripts/models.js"
   },
   "dependencies": {

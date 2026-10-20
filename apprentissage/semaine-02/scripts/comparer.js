@@ -10,31 +10,10 @@
 
 import { creerClient, expliquerErreur, MODELE } from '../lib/gemini.js';
 import { LIGNES } from '../donnees/lignes.js';
+import { PROMPTS } from '../prompts/cahier.js';
 
-// --- Le prompt système : ce que le modèle doit savoir AVANT de lire la ligne ----------
-// Il est écrit une fois et réutilisé pour chaque ligne : c'est la « fiche de poste » du modèle.
-const INSTRUCTIONS_SYSTEME = `
-RÔLE
-Tu aides à numériser les cahiers de bord de camions qui transportent des matériaux à Antananarivo (Madagascar).
-
-TÂCHE
-On te donne UNE ligne recopiée du cahier. Dis en français ce qu'elle signifie.
-
-CONTEXTE (vocabulaire du cahier)
-- « vgs » = voyage(s). « 2vgs » = 2 voyages.
-- Fasika = sable ; Biriky = brique ; Gravillon = gravillon.
-- Le chiffre entouré (⑦, ⑧…) est le numéro du voyage.
-- « A -> B » = trajet de A vers B. Les noms de lieux sont des quartiers ou des villes : ne les traduis pas.
-- « Frais » ou « Vola » = montant payé pour le voyage, en Ariary (Ar).
-- « 120000 - 50000 » = montant de 120 000 Ar moins une retenue de 50 000 Ar.
-
-CONTRAINTES
-- N'invente rien. Si un mot n'est pas dans ce vocabulaire, recopie-le tel quel suivi de « (?) ».
-- Ne fais aucun calcul : recopie les montants tels qu'ils sont écrits.
-
-FORMAT
-Une seule phrase, en texte brut, sans Markdown.
-`.trim();
+// Le prompt système de l'étape 1 est maintenant rangé (et versionné) dans prompts/cahier.js.
+const INSTRUCTIONS_SYSTEME = PROMPTS.v0;
 
 // --- Choisir la ligne à tester ---------------------------------------------------------
 const argument = process.argv[2];

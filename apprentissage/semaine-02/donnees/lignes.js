@@ -13,4 +13,8 @@ export const LIGNES = [
   'Sakafo 12000 / G.O 50000 / Dokera 15000',
   // solde écrit en fin de journée
   'Reste vola 113000',
+  // apport d'argent : « Vola tany an-trano » = argent apporté de la maison
+  'Vola tany an-trano 100000',
+  // « Kapoaka » est un vrai mot malagasy, mais il n'est PAS dans le lexique : il doit être signalé INCONNU
+  'Motard 5000 / Croix 2000 / Kapoaka 3000',
 ];
