@@ -19,6 +19,8 @@ npm run lire                   # toutes les lignes, dernière version du prompt
 npm run lire -- --version v0   # toutes les lignes, avec une version précise
 npm run lire -- 7              # une seule ligne
 npm run lire -- --version v1_1 # sans exemples, pour comparer avec v2
+npm run discuter               # conversation : lignes, « Correction : … », « Question : … »
+npm run discuter -- --sans-memoire
 ```
 
 ## Organisation
@@ -30,9 +32,11 @@ semaine-02/
 ├── donnees/lignes.js           ← lignes de cahier inventées (avec des pièges)
 ├── 02-prompt-lecteur-de-cahier.md ← étape 2 : lexique complet, règles, format étiqueté
 ├── 03-apprendre-par-l-exemple.md ← étape 3 : few-shot (exemples)
-├── prompts/cahier.js           ← les versions du prompt (v0, v1, v1_1, v2) et les exemples
+├── 04-conversation.md          ← étape 4 : historique, mémoire, coût qui grandit
+├── prompts/cahier.js           ← les versions du prompt (v0, v1, v1_1, v2), les exemples, le prompt de conversation
 ├── scripts/comparer.js         ← étape 1 : prompt nu contre prompt construit
-└── scripts/lire.js             ← étape 2 : lit les lignes avec une version du prompt
+├── scripts/lire.js             ← étapes 2-3 : lit les lignes avec une version du prompt
+└── scripts/discuter.js         ← étape 4 : conversation dans le terminal
 ```
 
 ## Progression
@@ -40,7 +44,7 @@ semaine-02/
 - [x] Étape 1 — Anatomie d'un prompt : instructions système / message, les 5 ingrédients
 - [x] Étape 2 — Le prompt « lecteur de cahier » v1 : lexique complet, règles anti-invention, versionné
 - [x] Étape 3 — Apprendre par l'exemple (few-shot) : v2
-- [ ] Étape 4 — Conversation sur plusieurs tours : l'historique
+- [x] Étape 4 — Conversation sur plusieurs tours : l'historique
 - [ ] Étape 5 — Comparer les versions sur toutes les lignes + checklist
 
 **Critère de réussite :** sur 5 lignes de cahier, aucun mot malagasy n'est inventé.
