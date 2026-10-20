@@ -12,15 +12,15 @@ le serveur vérifie les calculs, l'utilisateur valide, et les données sont enre
 
 ## Domaine (vocabulaire du cahier)
 - Journée : une date, un camion, un chauffeur ; contient des voyages, des dépenses, des mouvements d'argent et un solde écrit (« Reste », « Reste vola »).
-- Voyage : numéro entouré (numérotation continue d'un jour à l'autre), produit, quantité (« 1 Vgs » = 1 voyage), origine → destination, montant (« Frais » / « Vola »), retenue éventuelle (« 120000 - 50000 »).
+- Voyage : numéro entouré (la numérotation se suit d'un jour à l'autre et repart à 1 chaque semaine), produit, quantité (« 1 Vgs » = 1 voyage), origine → destination, montant (« Frais » / « Vola »), retenue éventuelle (« 120000 - 50000 »).
 - Produits : Fasika = sable, Biriky = brique, Moellon, Gravillon, Hazo = bois, Déménagement.
-- Statut d'un voyage : payé ; service (« service tsy vola » = gratuit, montant 0) ; en attente (« Miandry vola » = créance).
+- Statut d'un voyage : payé ; service (« service tsy vola » = payé directement à la maison, au propriétaire : l'argent ne passe pas par le chauffeur, montant 0 dans la caisse du camion) ; en attente (« Miandry vola » = créance).
 - Dépenses : sakafo = repas, G.O = gasoil, dokera = chargeurs, police, motard, croix, ristourne, achat de marchandise (vidim-pasika, vidina gravillon).
 - Mouvements : apport (« Vola tany an-trano »), total écrit (« Total vola »), autre (ex. « Vola Ambohipanja »).
 
 ## Règle de calcul d'une journée
 solde = Σ(montant − retenue) des voyages payés + apports − Σ dépenses
-Les voyages « service » et « en attente » ne comptent pas dans la caisse.
+Les voyages « service » (payés à la maison) et « en attente » ne comptent pas dans la caisse du camion.
 
 ## Créances
 - Un voyage « en attente » est une créance, soldée par un ou plusieurs paiements (table Paiement).
