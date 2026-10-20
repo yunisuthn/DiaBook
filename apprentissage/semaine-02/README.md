@@ -28,7 +28,7 @@ semaine-02/
 ├── lib/gemini.js               ← copie de la semaine 1 (client, erreurs)
 ├── donnees/lignes.js           ← lignes de cahier inventées (avec des pièges)
 ├── 02-prompt-lecteur-de-cahier.md ← étape 2 : lexique complet, règles, format étiqueté
-├── prompts/cahier.js           ← les versions du prompt (v0, v1…)
+├── prompts/cahier.js           ← les versions du prompt (v0, v1, v1_1)
 ├── scripts/comparer.js         ← étape 1 : prompt nu contre prompt construit
 └── scripts/lire.js             ← étape 2 : lit les lignes avec une version du prompt
 ```

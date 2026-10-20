@@ -54,3 +54,19 @@ Deux solutions, qu'on verra plus tard :
 
 - envoyer **toute la page** en un seul appel au lieu de ligne par ligne (semaine 4, avec la photo) ;
 - le **cache de prompt** : le fournisseur garde le début du prompt en mémoire et le facture beaucoup moins cher (semaine 10).
+
+## Exercice : la version v1_1
+
+On ne modifie pas la v1 : la v1_1 est une **copie corrigée**, ajoutée à `PROMPTS` et devenue `DERNIERE_VERSION`.
+
+| Changement                                                                                          | Pourquoi                                                                                            |
+| --------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------- |
+| « Service » = **payé directement à la maison** (statut « payé directement »)                        | c'est la réalité du terrain ; supprime la contradiction avec la règle 4                             |
+| Numéro du voyage **en chiffres ordinaires** (⑦ → 7), numérotation qui **repart à 1 chaque semaine** | on garde l'exemple « ⑦ » pour que le modèle reconnaisse le chiffre entouré, et on dit quoi en faire |
+
+Résultats (`npm run lire -- --version v1_1`) : les numéros sortent en **7, 8, 9** ; le voyage Service est
+« payé directement » ; Kapoaka reste `INCONNU`. Coût : 6 237 tokens d'entrée (+ 300 pour le prompt plus long), 232 en sortie.
+
+**Leçon :** pour corriger un modèle, il vaut mieux **ajouter une consigne** (« écris ⑦ → 7 ») que **retirer un exemple**.
+Une première tentative remplaçait « ①, ⑦, ⑪ » par « 1, 7, 11 » : le modèle ne savait plus à quoi ressemble un chiffre
+entouré, et il recopiait encore « ⑦ » une fois sur deux.
