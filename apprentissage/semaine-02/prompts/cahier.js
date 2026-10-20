@@ -164,6 +164,19 @@ const EXEMPLES_V2 = [
   },
 ];
 
+// Prompt de CONVERSATION — étape 4 : v2 + des consignes pour un échange sur plusieurs tours
+// (les lignes d'une page arrivent une par une, l'utilisateur peut corriger ou poser une question).
+// Ce n'est pas une nouvelle version de la lecture : c'est une autre tâche, construite sur v2.
+export const PROMPT_CONVERSATION = `${v2}
+
+CONVERSATION
+Les lignes d'une même page arrivent une par une, dans l'ordre. Tu te souviens des messages précédents de cette conversation.
+L'utilisateur peut aussi écrire :
+- « Correction : … » → applique la correction et réécris UNIQUEMENT la ou les lignes de réponse concernées, corrigées, au même format.
+- « Question : … » → réponds en une phrase, en texte brut, uniquement à partir des lignes déjà lues dans cette conversation.
+  Si l'information n'y est pas, réponds « Je ne trouve pas cette information dans les lignes lues. »
+Ne modifie jamais de toi-même une ligne déjà lue sans « Correction : » de l'utilisateur.`;
+
 export const PROMPTS = { v0, v1, v1_1, v2 };
 export const EXEMPLES = { v2: EXEMPLES_V2 };
 export const DERNIERE_VERSION = 'v2';
