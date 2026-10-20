@@ -19,7 +19,7 @@ l'utilisateur valide, et les données sont enregistrées.
 - **Extraction** des journées par l'API Claude (vision) : voyages, dépenses, mouvements d'argent, solde écrit
 - **Contrôles automatiques** :
   - recalcul du solde, comparé au « Reste » écrit dans le cahier ;
-  - continuité de la numérotation des voyages ;
+  - continuité de la numérotation des voyages (elle repart à 1 chaque semaine) ;
   - lieux inconnus ;
   - lectures peu sûres.
 - **Validation** : la photo et les champs modifiables côte à côte, les écarts mis en évidence
@@ -28,20 +28,20 @@ l'utilisateur valide, et les données sont enregistrées.
 
 ## Le vocabulaire du cahier
 
-| Dans le cahier                           | Signification                           |
-| ---------------------------------------- | --------------------------------------- |
-| Fasika, Biriky, Moellon, Gravillon, Hazo | sable, brique, moellon, gravillon, bois |
-| « 1 Vgs »                                | 1 voyage                                |
-| Frais / Vola                             | montant du voyage                       |
-| « 120000 - 50000 »                       | montant moins une retenue               |
-| Service tsy vola                         | voyage gratuit (montant 0)              |
-| Miandry vola                             | voyage non encore payé (créance)        |
-| sakafo, G.O, dokera                      | repas, gasoil, chargeurs                |
-| Reste / Reste vola                       | solde de la journée                     |
+| Dans le cahier                           | Signification                                               |
+| ---------------------------------------- | ----------------------------------------------------------- |
+| Fasika, Biriky, Moellon, Gravillon, Hazo | sable, brique, moellon, gravillon, bois                     |
+| « 1 Vgs »                                | 1 voyage                                                    |
+| Frais / Vola                             | montant du voyage                                           |
+| « 120000 - 50000 »                       | montant moins une retenue                                   |
+| Service tsy vola                         | voyage payé directement à la maison (hors caisse du camion) |
+| Miandry vola                             | voyage non encore payé (créance)                            |
+| sakafo, G.O, dokera                      | repas, gasoil, chargeurs                                    |
+| Reste / Reste vola                       | solde de la journée                                         |
 
 **Règle de calcul d'une journée :**
 `solde = Σ (montant − retenue) des voyages payés + apports − Σ dépenses`.
-Les voyages « service » et « en attente » ne comptent pas dans la caisse.
+Les voyages « service » (payés à la maison) et « en attente » ne comptent pas dans la caisse du camion.
 
 ## Stack
 
