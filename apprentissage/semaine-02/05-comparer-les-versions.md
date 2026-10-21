@@ -58,3 +58,15 @@ Les réessais automatiques du SDK (2 s puis 4 s) ne suffisent pas : Google deman
 Solution : **espacer les appels**. Le script attend 60 000 ms / 15 = 4 s entre deux requêtes (`--rpm 15`).
 Les 28 appels prennent environ 2 min 30 au lieu de 30 s, mais ils vont jusqu'au bout.
 On reverra ce problème à plus grande échelle en semaine 10 (file d'attente des extractions).
+
+## Leçon 3 : une coupure réseau ne doit pas tout faire perdre
+
+Pendant tes tests, l'évaluation s'est arrêtée dès le premier appel : `EAI_AGAIN`. L'ordinateur n'a pas réussi,
+pendant un instant, à trouver l'adresse de Google (problème passager de la box Internet).
+
+Les réessais automatiques du SDK ne couvrent que les **réponses d'erreur** de Google (429, 503…).
+Une coupure réseau se produit **avant** d'atteindre Google : personne ne réessaie.
+Sur une évaluation de 2 minutes, une seule coupure faisait donc tout perdre.
+
+`lireLigne()` réessaie maintenant les coupures réseau (`EAI_AGAIN`, `ECONNRESET`, `ETIMEDOUT`…) 3 fois, après 2 s puis 4 s,
+et l'affiche dans le terminal : `(coupure réseau EAI_AGAIN, nouvel essai dans 2 s…)`.
