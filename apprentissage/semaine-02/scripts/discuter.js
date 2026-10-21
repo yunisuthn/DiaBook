@@ -22,11 +22,15 @@ const { values: options } = parseArgs({
 });
 const avecMemoire = !options['sans-memoire'];
 
-// Les exemples few-shot de v2 : toujours envoyés en premier, ils ne font pas partie de la conversation.
-const exemples = EXEMPLES.v2.flatMap(({ ligne, reponse }) => [
-  { role: 'user', parts: [{ text: ligne }] },
-  { role: 'model', parts: [{ text: reponse }] },
-]);
+// Les exemples few-shot de v2 sont écrits DANS le prompt système, et non envoyés comme de faux échanges :
+// ainsi le modèle ne peut plus les confondre avec les lignes de la page.
+const texteExemples = EXEMPLES.v2
+  .map(({ ligne, reponse }) => `Ligne : ${ligne}\nRéponse :\n${reponse}`)
+  .join('\n\n');
+const instructions = `${PROMPT_CONVERSATION}
+
+EXEMPLES (uniquement pour montrer le format : ils ne font pas partie de la page)
+${texteExemples}`;
 
 // L'historique de la conversation : c'est NOUS qui le gardons, pas le modèle.
 // L'API est « sans état » : à chaque tour, on renvoie tout ce qui s'est dit.
@@ -65,14 +69,14 @@ for await (const saisieBrute of rl) {
   }
 
   const message = { role: 'user', parts: [{ text: saisie }] };
-  // Ce qui part au modèle : exemples + (historique si mémoire) + le nouveau message.
-  const contents = [...exemples, ...(avecMemoire ? historique : []), message];
+  // Ce qui part au modèle : (historique si mémoire) + le nouveau message.
+  const contents = [...(avecMemoire ? historique : []), message];
 
   try {
     const reponse = await ai.models.generateContent({
       model: MODELE,
       contents,
-      config: { temperature: 0, systemInstruction: PROMPT_CONVERSATION },
+      config: { temperature: 0, systemInstruction: instructions },
     });
     const texte = reponse.text?.trim() ?? '';
     const u = reponse.usageMetadata ?? {};

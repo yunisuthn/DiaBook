@@ -64,3 +64,41 @@ Sans elles, il se rabat sur les exemples.
 
 C'est une forme d'**injection** : du contenu qui n'est pas une instruction est pris pour une partie de la tâche.
 On y reviendra en semaine 11. Pistes pour l'éviter : voir l'exercice.
+
+## Exercice : empêcher le modèle de confondre exemples et page
+
+### Piste A — ajouter une consigne : ❌ insuffisant
+
+Trois phrases ajoutées à `PROMPT_CONVERSATION` : « les 4 premiers échanges sont des EXEMPLES de format,
+ne les corrige jamais » et « si la correction vise un voyage absent, réponds “Je ne trouve pas ce voyage” ».
+
+Résultat sans mémoire : le modèle a **encore** modifié l'exemple, et pire, il lui a appliqué la correction
+(« VOYAGE n°12 : 1 voyage de **gravillon** … »). Pour lui, des échanges `user` / `model` sont une conversation
+qui a réellement eu lieu ; une phrase dans les instructions pèse moins lourd que ce qu'il « voit ».
+
+### Piste B — changer la structure : ✅ retenue
+
+Les exemples ne sont plus envoyés comme de faux échanges. Ils sont **écrits dans le prompt système**,
+sous un titre « EXEMPLES (uniquement pour montrer le format : ils ne font pas partie de la page) ».
+L'historique ne contient plus que la vraie conversation.
+
+```js
+const instructions = `${PROMPT_CONVERSATION}
+
+EXEMPLES (uniquement pour montrer le format : ils ne font pas partie de la page)
+${texteExemples}`;
+const contents = [...(avecMemoire ? historique : []), message]; // plus d'exemples ici
+```
+
+Des deux phrases de la piste A, on ne garde que celle qui reste vraie (« voyage absent → Je ne trouve pas ce voyage »).
+Les autres décrivaient « les 4 premiers échanges », qui n'existent plus : **un prompt ne doit jamais décrire
+quelque chose de faux**.
+
+| Test                                                                | Piste A                   | Piste B                                                                            |
+| ------------------------------------------------------------------- | ------------------------- | ---------------------------------------------------------------------------------- |
+| Sans mémoire : `Correction : le voyage 1 transportait du gravillon` | modifie l'exemple n°12 ❌ | « Je ne trouve pas ce voyage dans les lignes lues. » ✅                            |
+| Sans mémoire : `Question : quel est le montant du voyage 12 ?`      | —                         | « Je ne trouve pas cette information… » ✅ (l'exemple n'est pas pris pour la page) |
+| Avec mémoire : ligne Fasika puis correction                         | voyage 1 → gravillon ✅   | voyage 1 → gravillon ✅                                                            |
+
+**Leçon :** quand une consigne n'est pas suivie, ajouter des mots ne suffit pas toujours.
+Il faut parfois **changer la forme de ce qu'on envoie**.
