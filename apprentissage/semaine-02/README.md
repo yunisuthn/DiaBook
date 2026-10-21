@@ -21,7 +21,10 @@ npm run lire -- 7              # une seule ligne
 npm run lire -- --version v1_1 # sans exemples, pour comparer avec v2
 npm run discuter               # conversation : lignes, « Correction : … », « Question : … »
 npm run discuter -- --sans-memoire
+npm run evaluer                # note toutes les versions sur toutes les lignes (≈ 2 min 30)
 ```
+
+Résumé de la semaine et checklist : [RESUME.md](RESUME.md).
 
 ## Organisation
 
@@ -29,14 +32,19 @@ npm run discuter -- --sans-memoire
 semaine-02/
 ├── 01-anatomie-d-un-prompt.md  ← étape 1 : système / utilisateur, les 5 ingrédients
 ├── lib/gemini.js               ← copie de la semaine 1 (client, erreurs)
+├── lib/lecteur.js              ← lireLigne() : la seule fonction qui fait lire une ligne au modèle
 ├── donnees/lignes.js           ← lignes de cahier inventées (avec des pièges)
+├── donnees/attendus.js         ← ce que chaque lecture doit (ou ne doit pas) contenir
 ├── 02-prompt-lecteur-de-cahier.md ← étape 2 : lexique complet, règles, format étiqueté
 ├── 03-apprendre-par-l-exemple.md ← étape 3 : few-shot (exemples)
 ├── 04-conversation.md          ← étape 4 : historique, mémoire, coût qui grandit
+├── 05-comparer-les-versions.md ← étape 5 : évaluation automatique des versions
+├── RESUME.md                   ← résumé de la semaine + checklist
 ├── prompts/cahier.js           ← les versions du prompt (v0, v1, v1_1, v2), les exemples, le prompt de conversation
 ├── scripts/comparer.js         ← étape 1 : prompt nu contre prompt construit
 ├── scripts/lire.js             ← étapes 2-3 : lit les lignes avec une version du prompt
-└── scripts/discuter.js         ← étape 4 : conversation dans le terminal
+├── scripts/discuter.js         ← étape 4 : conversation dans le terminal
+└── scripts/evaluer.js          ← étape 5 : compare et note les versions
 ```
 
 ## Progression
@@ -45,6 +53,6 @@ semaine-02/
 - [x] Étape 2 — Le prompt « lecteur de cahier » v1 : lexique complet, règles anti-invention, versionné
 - [x] Étape 3 — Apprendre par l'exemple (few-shot) : v2
 - [x] Étape 4 — Conversation sur plusieurs tours : l'historique
-- [ ] Étape 5 — Comparer les versions sur toutes les lignes + checklist
+- [x] Étape 5 — Comparer les versions sur toutes les lignes + checklist
 
 **Critère de réussite :** sur 5 lignes de cahier, aucun mot malagasy n'est inventé.
