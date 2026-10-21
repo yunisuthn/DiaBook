@@ -6,11 +6,11 @@
 //   npm run lire -- 7                     → seulement la 7e ligne
 //   npm run lire -- "ma ligne" --version v1
 //
-// Si la version a des exemples (few-shot), ils sont envoyés avant la ligne, sous forme
-// de faux échanges précédents : « utilisateur : ligne » → « modèle : réponse attendue ».
+// Si la version a des exemples (few-shot), ils sont envoyés avant la ligne (voir lib/lecteur.js).
 
 import { parseArgs } from 'node:util';
 import { creerClient, expliquerErreur, MODELE } from '../lib/gemini.js';
+import { lireLigne } from '../lib/lecteur.js';
 import { LIGNES } from '../donnees/lignes.js';
 import { PROMPTS, EXEMPLES, DERNIERE_VERSION } from '../prompts/cahier.js';
 
@@ -38,13 +38,6 @@ const lignes = !argument
 
 const exemples = EXEMPLES[options.version] ?? [];
 
-// Les exemples deviennent un historique de conversation : chaque message a un rôle,
-// « user » (ce qu'on envoie) ou « model » (ce que le modèle est censé avoir répondu).
-const historiqueExemples = exemples.flatMap(({ ligne, reponse }) => [
-  { role: 'user', parts: [{ text: ligne }] },
-  { role: 'model', parts: [{ text: reponse }] },
-]);
-
 console.log(
   `Modèle : ${MODELE} · prompt ${options.version} · ${exemples.length} exemple(s) · température 0\n`,
 );
@@ -55,16 +48,10 @@ try {
 
   // Une requête par ligne, l'une après l'autre (pas en parallèle : on ménage le quota gratuit).
   for (const [i, ligne] of lignes.entries()) {
-    const reponse = await ai.models.generateContent({
-      model: MODELE,
-      contents: [...historiqueExemples, { role: 'user', parts: [{ text: ligne }] }],
-      config: { temperature: 0, systemInstruction: prompt },
-    });
-
-    const texte = reponse.text?.trim() ?? '';
-    const u = reponse.usageMetadata ?? {};
-    total.entree += u.promptTokenCount ?? 0;
-    total.sortie += u.candidatesTokenCount ?? 0;
+    // L'appel au modèle (prompt + exemples éventuels) est dans lib/lecteur.js.
+    const { texte, entree, sortie } = await lireLigne(ai, options.version, ligne);
+    total.entree += entree;
+    total.sortie += sortie;
     total.inconnus += (texte.match(/^INCONNU/gm) ?? []).length;
 
     console.log(`[${i + 1}] ${ligne}`);

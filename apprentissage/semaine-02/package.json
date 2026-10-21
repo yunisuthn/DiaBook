@@ -11,7 +11,8 @@
     "comparer": "node scripts/comparer.js",
     "lire": "node scripts/lire.js",
     "models": "node scripts/models.js",
-    "discuter": "node scripts/discuter.js"
+    "discuter": "node scripts/discuter.js",
+    "evaluer": "node scripts/evaluer.js"
   },
   "dependencies": {
     "@google/genai": "2.30.0"
