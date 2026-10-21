@@ -175,6 +175,7 @@ L'utilisateur peut aussi écrire :
 - « Correction : … » → applique la correction et réécris UNIQUEMENT la ou les lignes de réponse concernées, corrigées, au même format.
 - « Question : … » → réponds en une phrase, en texte brut, uniquement à partir des lignes déjà lues dans cette conversation.
   Si l'information n'y est pas, réponds « Je ne trouve pas cette information dans les lignes lues. »
+Si une « Correction : … » concerne un voyage absent des lignes de la page, réponds « Je ne trouve pas ce voyage dans les lignes lues. »
 Ne modifie jamais de toi-même une ligne déjà lue sans « Correction : » de l'utilisateur.`;
 
 export const PROMPTS = { v0, v1, v1_1, v2 };
