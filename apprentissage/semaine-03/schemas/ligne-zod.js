@@ -42,6 +42,11 @@ const Voyage = z
   .refine((v) => v.retenue === null || (v.montant !== null && v.retenue <= v.montant), {
     message: 'la retenue ne peut pas dépasser le montant',
     path: ['retenue'],
+  })
+  .refine((v) => v.statut !== 'en_attente' || v.montant !== null, {
+    message:
+      'un voyage en attente doit avoir un montant (sinon on ne sait pas combien le client doit)',
+    path: ['montant'],
   });
 
 const Depense = z.object({

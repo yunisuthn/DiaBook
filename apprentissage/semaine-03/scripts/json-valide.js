@@ -80,6 +80,24 @@ const REPONSES_FAUSSES = [
       ],
     },
   },
+  {
+    titre: 'voyage en attente sans montant (règle métier)',
+    objet: {
+      elements: [
+        {
+          type: 'voyage',
+          numero: 9,
+          quantite: 1,
+          produit: 'gravillon',
+          origine: 'A',
+          destination: 'B',
+          montant: null,
+          retenue: null,
+          statut: 'en_attente',
+        },
+      ],
+    },
+  },
 ];
 
 console.log('=== 1. Ce que Zod attrape (réponses fausses écrites à la main) ===\n');
