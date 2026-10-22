@@ -65,3 +65,32 @@ pour renvoyer l'erreur au modèle et lui demander de corriger.
 2. **Un seul schéma** : on écrit en Zod, on convertit pour l'API (`z.toJSONSchema`).
 3. `safeParse` ne plante pas : il renvoie `{ success, data }` ou `{ success, error }`. Le programme décide quoi faire.
 4. `resultat.data` est un objet **dont on est sûr** : c'est lui, et seulement lui, qu'on enregistrera plus tard.
+
+## Exercice : une règle métier à toi
+
+Nouvelle règle sur le voyage : **un voyage « en_attente » (Miandry vola) doit avoir un montant**,
+sinon on ne sait pas combien le client doit.
+
+```js
+.refine((v) => v.statut !== 'en_attente' || v.montant !== null, {
+  message: 'un voyage en attente doit avoir un montant (sinon on ne sait pas combien le client doit)',
+  path: ['montant'],
+})
+```
+
+Lecture : « soit le voyage n'est pas en attente, soit il a un montant ». Un `.refine()` renvoie `true` quand tout va bien.
+
+| Test                                                  | Résultat                                                    |
+| ----------------------------------------------------- | ----------------------------------------------------------- |
+| Réponse fausse : voyage `en_attente`, `montant: null` | ❌ refusé, avec **le bon message**, à `elements[0].montant` |
+| Vraie ligne 3 (`Miandry vola 90000`)                  | ✅ acceptée                                                 |
+
+### Les pièges rencontrés
+
+1. **Condition inversée.** Un premier essai écrivait `v.montant == null` : la règle **exigeait** qu'un voyage en attente
+   n'ait pas de montant, et aurait refusé la vraie ligne 3.
+2. **Un test qui échoue pour la mauvaise raison.** Le premier cas de test était une copie du cas « retenue > montant » :
+   il était bien refusé… par l'ancienne règle. Il faut **lire le message**, pas seulement voir ❌.
+3. **`path`** désigne un **champ** de l'objet (`montant`), pas une valeur (`en_attente`).
+
+**On teste toujours dans les deux sens :** une mauvaise donnée doit être refusée, et une bonne doit être acceptée.
