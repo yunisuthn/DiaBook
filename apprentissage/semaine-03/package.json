@@ -1,0 +1,16 @@
+{
+  "name": "diabook-semaine-03",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Semaine 3 : sorties structurées (JSON) pour lire le cahier de bord",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "json-demande": "node scripts/json-demande.js"
+  },
+  "dependencies": {
+    "@google/genai": "2.30.0"
+  }
+}
