@@ -29,3 +29,23 @@ Réponds UNIQUEMENT avec un objet JSON de cette forme :
 - "nature" d'un mouvement vaut "apport", "total" ou "autre".
 - Les montants sont des nombres entiers en Ariary. Une information non écrite vaut null.
 `.trim();
+
+// Étape 2 — le JSON est IMPOSÉ par l'API (responseMimeType + responseJsonSchema, voir schemas/ligne.js).
+// Le prompt n'a plus besoin de montrer la forme du JSON : il explique seulement le SENS des champs.
+export const PROMPT_JSON_IMPOSE = `
+${ROLE}
+
+TÂCHE
+On te donne UNE ligne recopiée du cahier. Transforme chaque élément de la ligne en un élément de la liste « elements ».
+
+${LEXIQUE}
+
+${REGLES}
+
+SENS DES CHAMPS
+- type : voyage, depense, mouvement (argent qui entre ou total écrit), solde (« Reste »), inconnu (mot hors lexique).
+- statut d'un voyage : paye, paye_maison (Service) ou en_attente (Miandry vola).
+- nature : pour une dépense, sa nature en français (repas, gasoil…) ; pour un mouvement : apport, total ou autre.
+- Un champ qui ne concerne pas l'élément, ou une information non écrite, vaut null.
+- Pour un élément inconnu, mets le mot dans « texte » et le nombre qui le suit dans « montant ».
+`.trim();
