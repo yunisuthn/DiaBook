@@ -65,3 +65,30 @@ Les étapes suivantes règlent ces deux problèmes :
 
 - **étape 2** : l'API **impose** la forme (`responseMimeType` + schéma) ;
 - **étape 3** : le code **vérifie** le contenu (Zod).
+
+## Exercice : la « rustine » `extraireJSON()`
+
+Avant `JSON.parse`, on nettoie la réponse ([scripts/json-demande.js](scripts/json-demande.js)) :
+
+1. on enlève les balises ` ```json ` et ` ``` ` ;
+2. on garde seulement ce qui va du premier `{` au dernier `}`.
+
+Résultat : **7/7 réponses lisibles**. Les balises sont apparues cette fois sur les lignes **2 et 5**,
+et non plus sur la ligne 1 : encore une preuve que la forme change d'un appel à l'autre.
+
+### Pourquoi c'est fragile
+
+La rustine ne répare que les défauts **qu'on a prévus**. Testée sur des réponses imaginaires :
+
+| Réponse du modèle                              | Après `extraireJSON` + `JSON.parse`               |
+| ---------------------------------------------- | ------------------------------------------------- |
+| ` ```json {"a":1} ``` `                        | ✅ réparée                                        |
+| `Voici le JSON : {"a":1} Bonne journée !`      | ✅ réparée                                        |
+| `{"a":1} et aussi {"b":2}` (deux objets)       | ❌ le texte entre les deux objets reste au milieu |
+| `{"a":1,}` (virgule en trop)                   | ❌ JSON invalide                                  |
+| `{"montant": 120 000}` (espace dans un nombre) | ❌ JSON invalide                                  |
+
+Et même réparée, la réponse peut avoir un **contenu** faux (statut inventé, montant en texte) :
+la rustine ne regarde que la forme. Chaque nouveau défaut demanderait une nouvelle rustine.
+
+**La vraie solution est de ne pas laisser le modèle choisir la forme** : c'est l'étape 2.

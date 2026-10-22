@@ -31,8 +31,9 @@ try {
     console.log(`    Texte brut reçu : ${JSON.stringify(texte)}`);
 
     // JSON.parse transforme un texte en objet JavaScript… s'il est EXACTEMENT du JSON valide.
+    // extraireJSON() nettoie d'abord la réponse (voir en bas du fichier).
     try {
-      const objet = JSON.parse(texte);
+      const objet = JSON.parse(extraireJSON(texte));
       lisibles += 1;
       console.log('    ✅ JSON.parse a réussi :');
       console.log(`    ${JSON.stringify(objet)}`);
@@ -49,6 +50,21 @@ try {
 } catch (err) {
   console.error(`❌ ${expliquerErreur(err)}`);
   process.exitCode = 1;
+}
+
+// « Rustine » : nettoie la réponse du modèle pour n'en garder que l'objet JSON.
+// Exemple : "```json\n{ \"elements\": [] }\n```"  →  "{ \"elements\": [] }"
+function extraireJSON(texte) {
+  // 1. Enlever les balises Markdown ```json et ``` (le « g » de /…/g = toutes les occurrences).
+  const sansBalises = texte.replace(/```(json)?/g, '');
+
+  // 2. Garder seulement ce qui va du premier « { » au dernier « } » (inclus) :
+  //    tout texte avant ou après l'objet (« Voici le JSON : … ») est retiré.
+  const debut = sansBalises.indexOf('{');
+  const fin = sansBalises.lastIndexOf('}');
+  if (debut === -1 || fin < debut) return sansBalises; // pas d'objet : JSON.parse signalera l'erreur
+
+  return sansBalises.slice(debut, fin + 1);
 }
 
 // Même quand le texte est du JSON valide, son CONTENU peut ne pas respecter ce qu'on a demandé.
