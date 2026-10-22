@@ -91,3 +91,31 @@ Chacune a un `attendu` (date, nombre de voyages, de dépenses, Reste) et cache u
   La sortie coûte 5 fois plus cher que l'entrée : c'est le prix de données **directement utilisables** par le programme.
 
 Sur les 10 journées : 10 605 tokens d'entrée et 3 993 de sortie.
+
+## Exercice : ta propre page (J11)
+
+Une 11ᵉ journée, écrite à la main, le 09-10-26 :
+
+```
+09-10-26
+* Fasika 1vgs ⑪ Ampasika -> Ivato Frais 90000 - 20000
+* Moellon 1vgs ⑫ Ambohidratrimo -> Anosy Frais 85000
+Sakafo 12000 / G.O 45000 / Police 5000
+Reste vola 93000
+```
+
+| Étape                         | Calcul               |   Résultat |
+| ----------------------------- | -------------------- | ---------: |
+| Voyage ⑪ (payé, avec retenue) | 90000 − 20000        |     70 000 |
+| Voyage ⑫ (payé)               | 85000                |     85 000 |
+| Dépenses                      | 12000 + 45000 + 5000 |     62 000 |
+| **Reste**                     | 155000 − 62000       | **93 000** |
+
+Résultat de la lecture : date 2026-10-09, 2 voyages (dont la retenue de 20000), 3 dépenses, Reste 93000 : conforme à l'`attendu`.
+
+**Ce que l'exercice a montré :**
+
+- Un premier calcul à la main avait donné 50000 : **une erreur de calcul est vite arrivée**.
+  C'est exactement ce que le serveur de DiaBook doit détecter chez les receveurs (semaine 5).
+- Le script affichait ✅ même quand l'`attendu` ne correspondait pas : ✅ veut seulement dire « JSON valide selon Zod ».
+  **Comparer automatiquement à l'attendu** sera la première partie de l'étape 5.

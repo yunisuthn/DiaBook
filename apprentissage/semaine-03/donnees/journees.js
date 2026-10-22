@@ -114,4 +114,14 @@ Reste vola 138000`,
     // La lecture doit recopier 138000 (on lit, on ne corrige pas) ; l'écart sera détecté en semaine 5.
     attendu: { date: '2026-10-08', voyages: 3, depenses: 2, reste: 138000 },
   },
+  {
+    id: 'J11',
+    texte: `09-10-26
+* Fasika 1vgs ⑪ Ampasika -> Ivato Frais 90000 - 20000
+* Moellon 1vgs ⑫ Ambohidratrimo -> Anosy Frais 85000
+Sakafo 12000 / G.O 45000 / Police 5000
+Reste vola 93000`,
+    // (90000 − 20000) + 85000 − (12000 + 45000 + 5000) = 155000 − 62000 = 93000
+    attendu: { date: '2026-10-09', voyages: 2, depenses: 3, reste: 93000 },
+  },
 ];
