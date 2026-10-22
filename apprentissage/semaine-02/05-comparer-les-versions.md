@@ -70,3 +70,18 @@ Sur une évaluation de 2 minutes, une seule coupure faisait donc tout perdre.
 
 `lireLigne()` réessaie maintenant les coupures réseau (`EAI_AGAIN`, `ECONNRESET`, `ETIMEDOUT`…) 3 fois, après 2 s puis 4 s,
 et l'affiche dans le terminal : `(coupure réseau EAI_AGAIN, nouvel essai dans 2 s…)`.
+
+## Exercice : faire voir la forme à l'évaluation
+
+`'voyage(s)'` est ajouté aux mots interdits des trois lignes de voyage (Fasika, Biriky, Gravillon).
+
+| Version |      Avant |                                             Après |
+| ------- | ---------: | ------------------------------------------------: |
+| v1_1    | 7/7 justes | **4/7** (lignes 1, 2, 3 : « contient voyage(s) ») |
+| v2      | 7/7 justes |                                           **7/7** |
+
+L'évaluation mesure maintenant ce qu'on avait vu à l'œil à l'étape 3 : les exemples de v2 corrigent « voyage(s) ».
+Avec ce critère, v2 gagne, malgré ses 26 % de tokens d'entrée en plus. **Le choix d'une version dépend des critères qu'on se donne.**
+
+Piège rencontré : un **décalage de 1**. La « ligne 1 » affichée par le script est `LIGNES[0]`, car les tableaux JavaScript
+commencent à 0. Une première tentative avait mis le critère sur les lignes 2, 3 et 4 (des dépenses) au lieu de 1, 2 et 3.

@@ -13,17 +13,17 @@ export const CAS = [
   {
     ligne: LIGNES[0], // Fasika 2vgs ⑦ … 120000 - 50000Ar
     doitContenir: ['sable', 'ampasika', 'ivato', '120000', '50000'],
-    interdits: ['70000'], // le modèle ne doit pas calculer 120000 − 50000
+    interdits: ['70000', 'voyage(s)'], // le modèle ne doit pas calculer 120000 − 50000
   },
   {
     ligne: LIGNES[1], // Biriky (Service)
     doitContenir: ['brique', 'manandriana', 'ambohitrimanjaka', ['payé directement', 'maison']],
-    interdits: ['taxi'],
+    interdits: ['taxi', 'voyage(s)'],
   },
   {
     ligne: LIGNES[2], // Gravillon … Miandry vola 90000
     doitContenir: ['gravillon', '90000', 'attente'],
-    interdits: [],
+    interdits: ['voyage(s)'],
   },
   {
     ligne: LIGNES[3], // Sakafo / G.O / Dokera
