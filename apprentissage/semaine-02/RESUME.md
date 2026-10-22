@@ -87,24 +87,24 @@ Cours : [05-comparer-les-versions.md](05-comparer-les-versions.md) · Script : `
 
 **Comprendre**
 
-- [ ] Je sais expliquer la différence entre instructions système et message.
-- [ ] Je connais les 5 ingrédients d'un prompt, et lequel compte le plus pour DiaBook (le contexte : le lexique).
-- [ ] Je sais pourquoi un prompt plus long peut coûter moins cher.
-- [ ] Je sais pourquoi on versionne un prompt, et pourquoi on ne modifie pas une version publiée.
-- [ ] Je sais ce qu'est le few-shot, et comment choisir de bons exemples.
-- [ ] Je sais pourquoi le modèle « se souvient » dans une conversation, et pourquoi le coût grandit.
+- [x] Je sais expliquer la différence entre instructions système et message.
+- [x] Je connais les 5 ingrédients d'un prompt, et lequel compte le plus pour DiaBook (le contexte : le lexique).
+- [x] Je sais pourquoi un prompt plus long peut coûter moins cher.
+- [x] Je sais pourquoi on versionne un prompt, et pourquoi on ne modifie pas une version publiée.
+- [x] Je sais ce qu'est le few-shot, et comment choisir de bons exemples.
+- [x] Je sais pourquoi le modèle « se souvient » dans une conversation, et pourquoi le coût grandit.
 
 **Pratique**
 
-- [ ] `npm run comparer` : je vois la différence entre la ligne seule et le prompt construit.
-- [ ] `npm run lire -- --version v1_1` : les 7 lignes sont lues sans rien inventer, Kapoaka sort en `INCONNU`.
-- [ ] `npm run discuter` : une correction et une question fonctionnent ; `--sans-memoire` ne touche plus aux exemples.
-- [ ] `npm run evaluer` : j'obtiens le tableau de comparaison des 4 versions.
+- [x] `npm run comparer` : je vois la différence entre la ligne seule et le prompt construit.
+- [x] `npm run lire -- --version v1_1` : les 7 lignes sont lues sans rien inventer, Kapoaka sort en `INCONNU`.
+- [x] `npm run discuter` : une correction et une question fonctionnent ; `--sans-memoire` ne touche plus aux exemples.
+- [x] `npm run evaluer` : j'obtiens le tableau de comparaison des 4 versions.
 
 **Livrable**
 
-- [ ] `prompts/cahier.js` contient v0, v1, v1_1 et v2, chacune avec un commentaire qui dit ce qui change.
-- [ ] Chaque étape a été livrée dans une PR, avec des commits à mon nom.
+- [x] `prompts/cahier.js` contient v0, v1, v1_1 et v2, chacune avec un commentaire qui dit ce qui change.
+- [x] Chaque étape a été livrée dans une PR, avec des commits à mon nom.
 
 **Critère de réussite :** sur 5 lignes de cahier, aucun mot malagasy n'est inventé. ✅ (v1_1 et v2, sur 7 lignes)
 
