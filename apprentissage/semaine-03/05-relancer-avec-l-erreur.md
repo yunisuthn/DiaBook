@@ -106,3 +106,61 @@ C'est pour ça qu'on ne relance qu'une fois.
 4. **Un refus doit viser une erreur de lecture.** Si le cahier lui-même est incomplet, c'est un avertissement :
    sinon le modèle « corrige » en cachant ou en inventant.
 5. **Se méfier d'une relance qui réussit** : vérifier qu'elle n'a rien fait disparaître.
+
+## Exercice : un mot inconnu avec un montant
+
+Dans J04, `Kapoaka 3000` est hors lexique : le modèle le range en `inconnu`, avec `montant: 3000`.
+Mais le receveur l'a compté dans son Reste (180000 − 14000 − 3000 = 163000).
+Si personne ne classe ces 3000 Ar, le calcul de la semaine 5 trouvera 166000 : un **faux écart**.
+
+Nouvel avertissement : **un élément inconnu qui a un montant est à classer par l'utilisateur.**
+
+### Un tableau de règles
+
+Avec deux règles, le ternaire du `flatMap` devenait illisible. Chaque règle est maintenant un objet
+« quand l'appliquer » (`si`) et « quoi dire » (`avertir`) :
+
+```js
+{
+  si: (el) => el.type === 'inconnu' && el.montant !== null,
+  avertir: (el, i) => ({
+    chemin: `elements[${i}]`,
+    message: `« ${el.texte} » (${el.montant}) hors lexique : à classer par l’utilisateur (dépense, mouvement…)`,
+  }),
+},
+```
+
+La fonction ne connaît plus aucune règle ; elle les applique toutes :
+
+```js
+journee.elements.flatMap((el, i) =>
+  REGLES.filter((regle) => regle.si(el)).map((regle) => regle.avertir(el, i)),
+);
+```
+
+- `filter` : pour l'élément `el`, on garde les règles dont `si(el)` est vrai ;
+- `map` : chacune devient un avertissement ;
+- `flatMap` : les listes de chaque élément sont mises bout à bout en **une seule** liste.
+
+**Pour ajouter un avertissement, on ajoute une règle.** La semaine 5 en ajoutera (par ex. Reste ≠ calcul).
+
+Le `chemin` est `elements[i]` (tout l'élément est à classer), et non `elements[i].montant` (le montant est juste).
+
+### Tests, dans les deux sens
+
+| Cas                                                 | Résultat                          |
+| --------------------------------------------------- | --------------------------------- |
+| `inconnu` « Kapoaka », `montant: 3000`              | ⚠️ 1 avertissement                |
+| `inconnu` « Asabotsy », `montant: null` (mot seul)  | aucun avertissement               |
+| voyage en attente, `montant: null` (ancienne règle) | ⚠️ toujours 1 avertissement       |
+| voyage en attente, `montant: 90000`                 | aucun avertissement               |
+| `npm run journee -- J04` (avec l'API)               | ⚠️ Kapoaka (3000), et ✅ conforme |
+
+**Ce que l'exercice a montré :**
+
+- Les deux premiers essais affichaient `[]` : le fichier n'avait pas encore changé. **Voir le test échouer d'abord**
+  est utile : on sait ensuite que c'est bien le nouveau code qui le fait passer.
+- « ✅ conforme » et « ⚠️ à classer » ne s'opposent pas : la lecture est **juste** (c'est bien ce qui est écrit),
+  mais la journée a besoin d'une **décision humaine** avant d'être enregistrée.
+- `❌ Impossible de joindre Google (EAI_AGAIN)` : coupure Internet (le DNS ne répondait plus), pas une erreur de code.
+  Le test hors ligne permettait de continuer quand même.
