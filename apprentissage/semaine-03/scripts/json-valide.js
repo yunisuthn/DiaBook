@@ -81,7 +81,8 @@ const REPONSES_FAUSSES = [
     },
   },
   {
-    titre: 'voyage en attente sans montant (règle métier)',
+    // Étape 5 : ce n'est plus un refus, mais un avertissement (lib/avertissements.js) → accepté par Zod.
+    titre: 'voyage en attente sans montant (étape 5 : accepté, avec un avertissement)',
     objet: {
       elements: [
         {

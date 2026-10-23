@@ -34,6 +34,7 @@ des dépenses, un « Reste » en bas. On envoie maintenant **toute la page** et 
 
 [schemas/journee-zod.js](schemas/journee-zod.js) **réutilise** `ElementSchema` de l'étape 3 :
 toutes les règles sur les voyages (payé ⇒ montant, retenue ≤ montant, en attente ⇒ montant) s'appliquent aussi ici.
+(À l'étape 5, « en attente ⇒ montant » est devenu un avertissement.)
 On ajoute seulement :
 
 - `date_ecrite` : la date telle qu'elle est écrite (« 28-09-26 », « 30/09/26 », « Asabotsy 03-10-26 ») ;

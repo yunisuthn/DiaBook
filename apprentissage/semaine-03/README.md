@@ -20,6 +20,8 @@ npm run json-valide -- --hors-ligne   # seulement la démonstration, sans appel 
 npm run journee                 # étape 4 : les 3 premières journées, une page = un appel
 npm run journee -- --toutes     # les 10 journées (≈ 1 minute)
 npm run journee -- J05 --detail # une journée, avec chaque élément
+npm run relance                 # étape 5 : la relance (faux client), puis une page piégée avec l'API
+npm run relance -- --hors-ligne # seulement la démonstration, sans appel à l'API
 ```
 
 ## Organisation
@@ -30,8 +32,11 @@ semaine-03/
 ├── 02-json-impose.md         ← étape 2 : responseMimeType + schéma, ce qui est garanti (et ce qui ne l'est pas)
 ├── 03-valider-avec-zod.md    ← étape 3 : un seul schéma Zod, pour l'API et pour le code
 ├── 04-une-journee-entiere.md ← étape 4 : une page = un appel, extraireJournee()
+├── 05-relancer-avec-l-erreur.md ← étape 5 : relance, refus ou avertissement, valide ≠ conforme
 ├── lib/gemini.js             ← client Gemini (copie des semaines précédentes)
-├── lib/extraction.js         ← étape 4 : extraireJournee(ai, texte) → journée validée ou ErreurExtraction
+├── lib/extraction.js         ← étapes 4-5 : extraireJournee(ai, texte) → journée validée (1 relance) ou ErreurExtraction
+├── lib/avertissements.js     ← étape 5 : ce qui est accepté mais à compléter par l'utilisateur
+├── lib/comparaison.js        ← étape 5 : comparerAttendu() → les écarts avec l'attendu
 ├── donnees/lignes.js         ← les 7 lignes de test inventées (semaine 2)
 ├── donnees/journees.js       ← étape 4 : 10 journées inventées, avec ce que la lecture doit trouver
 ├── prompts/lexique.js        ← blocs réutilisables : rôle, lexique, règles
@@ -42,7 +47,8 @@ semaine-03/
 ├── scripts/json-demande.js   ← étape 1 : demande du JSON et essaie JSON.parse
 ├── scripts/json-impose.js    ← étape 2 : JSON imposé par l'API
 ├── scripts/json-valide.js    ← étape 3 : schéma Zod imposé à l'API, puis safeParse
-└── scripts/journee.js        ← étape 4 : lit des journées entières
+├── scripts/journee.js        ← étapes 4-5 : lit des journées entières, bilan valides / conformes
+└── scripts/relance.js        ← étape 5 : la relance à l'œuvre (faux client, page piégée)
 ```
 
 ## Progression

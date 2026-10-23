@@ -11,7 +11,8 @@
     "json-demande": "node scripts/json-demande.js",
     "json-impose": "node scripts/json-impose.js",
     "json-valide": "node scripts/json-valide.js",
-    "journee": "node scripts/journee.js"
+    "journee": "node scripts/journee.js",
+    "relance": "node scripts/relance.js"
   },
   "dependencies": {
     "@google/genai": "2.30.0",
