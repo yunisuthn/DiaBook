@@ -33,6 +33,7 @@ semaine-03/
 ├── 03-valider-avec-zod.md    ← étape 3 : un seul schéma Zod, pour l'API et pour le code
 ├── 04-une-journee-entiere.md ← étape 4 : une page = un appel, extraireJournee()
 ├── 05-relancer-avec-l-erreur.md ← étape 5 : relance, refus ou avertissement, valide ≠ conforme
+├── RESUME.md                 ← résumé de la semaine + checklist
 ├── lib/gemini.js             ← client Gemini (copie des semaines précédentes)
 ├── lib/extraction.js         ← étapes 4-5 : extraireJournee(ai, texte) → journée validée (1 relance) ou ErreurExtraction
 ├── lib/avertissements.js     ← étape 5 : ce qui est accepté mais à compléter par l'utilisateur
@@ -57,6 +58,6 @@ semaine-03/
 - [x] Étape 2 — JSON imposé par l'API (`responseMimeType` + schéma)
 - [x] Étape 3 — Valider le contenu avec Zod : un seul schéma pour l'API et pour le code
 - [x] Étape 4 — Une journée entière : `extraireJournee(texte)`
-- [ ] Étape 5 — Quand le JSON est invalide : relancer avec l'erreur ; bilan sur 10 journées + checklist
+- [x] Étape 5 — Quand le JSON est invalide : relancer avec l'erreur ; bilan sur 10 journées + checklist
 
 **Critère de réussite :** 10 journées tapées → 10 JSON valides, du premier coup ou après une seule relance.

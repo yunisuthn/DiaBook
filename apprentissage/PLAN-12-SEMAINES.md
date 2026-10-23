@@ -18,7 +18,7 @@ photo du cahier → lecture par l'IA → vérification des calculs → validatio
 | ---: | --------------------------------------------- | ----------------------------------------------------------------- |
 |    1 | Comprendre un LLM, appeler une API, streaming | `ask.js` + page React en streaming ✅ terminée                    |
 |    2 | Prompt engineering                            | Prompt « lecteur de cahier » avec le lexique malagasy ✅ terminée |
-|    3 | Sorties structurées (JSON)                    | Texte d'une journée → JSON validé par Zod                         |
+|    3 | Sorties structurées (JSON)                    | Texte d'une journée → JSON validé par Zod ✅ terminée             |
 |    4 | Vision : lire une image                       | Photo d'une page → JSON                                           |
 |    5 | Règles métier et validation humaine           | Calcul du solde + écran de validation                             |
 |    6 | Évaluer la qualité                            | Jeu de test + score de précision par champ                        |
@@ -54,7 +54,7 @@ photo du cahier → lecture par l'IA → vérification des calculs → validatio
 - **Statut :** ✅ terminée le 2026-10-22, checklist validée ; critère atteint par v1_1 et v2 sur 7 lignes.
 - **Dossier :** [semaine-02/](semaine-02/) — résumé dans [semaine-02/RESUME.md](semaine-02/RESUME.md).
 
-## Semaine 3 — Sorties structurées (JSON)
+## Semaine 3 — Sorties structurées (JSON) ✅
 
 - **Notions :**
   - schéma JSON imposé au modèle (`responseSchema`) ;
@@ -66,6 +66,9 @@ photo du cahier → lecture par l'IA → vérification des calculs → validatio
   - Montants en **entiers** (Ariary), jamais de nombres à virgule.
 - **Livrable :** `extraireJournee(texte)` → objet validé, ou erreur explicite.
 - **Réussite :** 10 journées tapées → 10 JSON valides du premier coup ou après une seule relance.
+- **Statut :** ✅ terminée le 2026-10-23, checklist validée ; critère atteint : 11/11 journées valides du premier coup,
+  toutes conformes à l'attendu.
+- **Dossier :** [semaine-03/](semaine-03/) — résumé dans [semaine-03/RESUME.md](semaine-03/RESUME.md).
 
 ## Semaine 4 — Vision : lire une photo
 
