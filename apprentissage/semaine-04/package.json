@@ -1,0 +1,19 @@
+{
+  "name": "diabook-semaine-04",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Semaine 4 : vision, lire la photo d'une page du cahier de bord",
+  "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "images": "node scripts/fabriquer-images.js",
+    "photo": "node scripts/photo.js"
+  },
+  "dependencies": {
+    "@google/genai": "2.30.0",
+    "sharp": "0.35.5",
+    "zod": "4.6.7"
+  }
+}

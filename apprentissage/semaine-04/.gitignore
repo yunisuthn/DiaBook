@@ -1,0 +1,7 @@
+node_modules
+.env
+dist
+# Images fabriquées par « npm run images » : on les régénère, inutile de les versionner.
+images/
+# Photos de pages (étape 3) : jamais dans le dépôt, même inventées (le dépôt est public).
+photos/
