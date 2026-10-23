@@ -94,3 +94,7 @@ Lecture : « soit le voyage n'est pas en attente, soit il a un montant ». Un `.
 3. **`path`** désigne un **champ** de l'objet (`montant`), pas une valeur (`en_attente`).
 
 **On teste toujours dans les deux sens :** une mauvaise donnée doit être refusée, et une bonne doit être acceptée.
+
+> **Mise à jour à l'étape 5 :** cette règle a été retirée du schéma et est devenue un **avertissement**.
+> Quand le montant n'est pas écrit, le modèle a bien lu : c'est le cahier qui est incomplet.
+> Voir [05-relancer-avec-l-erreur.md](05-relancer-avec-l-erreur.md).
