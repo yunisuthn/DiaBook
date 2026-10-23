@@ -51,8 +51,14 @@ problème : **ce qui est illisible**.
 
 ## Résultats (`npm run photo -- --toutes`)
 
-**8 images sur 8 lues, valides et conformes à l'attendu** (J01 à J08). J09 à J11 n'ont pas pu être lues :
-la connexion Internet a coupé (`ETIMEDOUT`). Kapoaka (J04) donne le même avertissement qu'avec le texte.
+**11 images sur 11 lues, valides et conformes à l'attendu**, toutes du premier coup
+(J01 à J08 d'abord, puis J09 à J11 après une coupure Internet, `ETIMEDOUT`).
+
+- Kapoaka (J04) donne le même avertissement qu'avec le texte ;
+- J05 : la date reste `null` (non écrite) ;
+- J10 : le Reste faux du receveur (138000) est **recopié**, pas corrigé, comme avec le texte.
+
+Sur les 11 images : ≈ 23 600 tokens d'entrée, dont ≈ 11 900 pour les images.
 
 | J02 (6 lignes)   | Texte tapé (semaine 3) | Photo (1813 × 610 px) |
 | ---------------- | ---------------------: | --------------------: |
