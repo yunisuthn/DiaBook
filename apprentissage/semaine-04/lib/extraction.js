@@ -45,7 +45,12 @@ function partieDeLaPage(page) {
   return { inlineData: { mimeType: page.mimeType, data: page.image.toString('base64') } };
 }
 
-export async function extraireJournee(ai, page, { relances = 1 } = {}) {
+// Options :
+//   relances   : nombre de relances si la réponse est refusée (1 par défaut) ;
+//   resolution : pour une photo, la résolution à laquelle le modèle « regarde » l'image
+//                ('MEDIA_RESOLUTION_LOW' | 'MEDIA_RESOLUTION_MEDIUM' | 'MEDIA_RESOLUTION_HIGH').
+//                Non précisée : le choix par défaut du modèle (étape 2 : c'est HIGH pour gemini-3.5-flash-lite).
+export async function extraireJournee(ai, page, { relances = 1, resolution } = {}) {
   const photo = typeof page !== 'string';
   // La conversation : la page, puis (en cas de refus) la réponse du modèle et notre message d'erreur.
   const contents = [{ role: 'user', parts: [partieDeLaPage(page)] }];
@@ -62,6 +67,7 @@ export async function extraireJournee(ai, page, { relances = 1 } = {}) {
         systemInstruction: photo ? PROMPT_PHOTO : PROMPT_JOURNEE,
         responseMimeType: 'application/json',
         responseJsonSchema: SCHEMA_JOURNEE_POUR_API,
+        ...(resolution && { mediaResolution: resolution }),
       },
     });
 
